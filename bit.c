@@ -15,17 +15,17 @@
 
 unsigned int nb_bits_utile(unsigned long v)
 {
+	if (v < 1) return 0;
 
+	unsigned int utiles = 0;
 
+	while (v > 1) 
+	{
+		utiles++;
+		v /= 2;
+	}
 
-
-
-
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+	return utiles + 1; /* pour enlever un warning du compilateur */
 }
 
 /*
@@ -50,11 +50,8 @@ return 0 ; /* pour enlever un warning du compilateur */
 
 unsigned long pow2(Position_Bit position)
 {
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+	
+	return 0 ; /* pour enlever un warning du compilateur */
 }
 
 /*
