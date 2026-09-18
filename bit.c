@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "bit.h"
 
 /*
@@ -19,11 +21,11 @@ unsigned int nb_bits_utile(unsigned long v)
 
 	while (v > 0) 
 	{
-		v /= 2;
-		utiles++;
+		v >>= 1 ;
+		utiles++ ;
 	}
 
-	return utiles; 
+	return utiles ; 
 }
 
 /*
@@ -48,7 +50,7 @@ unsigned int nb_bits_utile(unsigned long v)
 
 unsigned long pow2(Position_Bit position)
 {
-	return (unsigned long)1 << position;
+	return (unsigned long) 1 << position ;
 }
 
 /*
@@ -64,8 +66,8 @@ Booleen prend_bit(unsigned long c,	     /* L'entier où on prend le bit */
 		  Position_Bit position	     /* La position du bit pris */
 		  )
 {
-
-return 0 ; /* pour enlever un warning du compilateur */
+	c >>= position ;
+	return c & 1 ; 
 }
 
 /*
