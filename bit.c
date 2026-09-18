@@ -21,11 +21,11 @@ unsigned int nb_bits_utile(unsigned long v)
 
 	while (v > 0) 
 	{
-		v >>= 1 ;
-		utiles++ ;
+		v >>= 1;
+		utiles++;
 	}
 
-	return utiles ; 
+	return utiles; 
 }
 
 /*
@@ -50,7 +50,7 @@ unsigned int nb_bits_utile(unsigned long v)
 
 unsigned long pow2(Position_Bit position)
 {
-	return (unsigned long) 1 << position ;
+	return (unsigned long) 1 << position;
 }
 
 /*
@@ -66,8 +66,8 @@ Booleen prend_bit(unsigned long c,	     /* L'entier où on prend le bit */
 		  Position_Bit position	     /* La position du bit pris */
 		  )
 {
-	c >>= position ;
-	return c & 1 ; 
+	c >>= position;
+	return c & 1; 
 }
 
 /*
@@ -81,9 +81,13 @@ unsigned long pose_bit(unsigned long c,	      /* Entier à modifier */
 		       Booleen      bit	      /* Nouvelle valeur du bit */
 		       )
 {
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+	unsigned long mask = pow2(position);
+	if (bit)
+	{
+		return c | mask;
+	}
+	else 
+	{
+		return c & ~mask;
+	}
 }
