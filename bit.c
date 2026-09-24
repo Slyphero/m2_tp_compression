@@ -82,10 +82,10 @@ unsigned long pose_bit(unsigned long c,	      /* Entier à modifier */
 		       )
 {
 	unsigned long mask = pow2(position);
-	if (bit)
+	if (bit) 
 	{
 		return c | mask;
-	}
+	} 
 	else 
 	{
 		return c & ~mask;
