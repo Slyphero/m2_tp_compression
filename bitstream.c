@@ -54,32 +54,37 @@ struct bitstream
  * Pour plus d'explications sur les exceptions, regardez "exception.h"
  */
 
-struct bitstream *open_bitstream(const char *fichier, const char* mode)
+struct bitstream *open_bitstream(const char *fichier, const char* mode) 
 {
+    struct bitstream *bstream;
+    ALLOUER(bstream, 1);
+    bstream->ecriture = (mode[0] == 'r') ? Faux : Vrai;
+    bstream->buffer = 0;
+    bstream->nb_bits_dans_buffer = 0;
+    
+    if (strcmp(fichier, "-") == 0) 
+    {
+        if (bstream->ecriture == Faux) 
+        {
+            bstream->fichier = stdin;
+        }
+        else 
+        {
+            bstream->fichier = stdout;
+        }
+    }
 
+    else 
+    {
+        bstream->fichier = fopen(fichier, mode); 
+    }
 
+    if (bstream->fichier == NULL) 
+    {
+        EXCEPTION_LANCE(Exception_fichier_ouverture);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+    return bstream ; /* pour enlever un warning du compilateur */
 }
 
 /*
@@ -99,15 +104,10 @@ return 0 ; /* pour enlever un warning du compilateur */
 
 void flush_bitstream(struct bitstream *b)
 {
-
-
-
-
-
-
-
-
-
+    if (b->ecriture == Faux) 
+    {
+        return;
+    }
 }
 
 /*
