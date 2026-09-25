@@ -66,7 +66,7 @@ struct bitstream *open_bitstream(const char *fichier, const char* mode)
         {
             bstream->fichier = stdin;
         } 
-        
+
         else 
         {
             bstream->fichier = stdout;
@@ -80,6 +80,7 @@ struct bitstream *open_bitstream(const char *fichier, const char* mode)
 
     if (bstream->fichier == NULL) 
     {
+        free(bstream);
         EXCEPTION_LANCE(Exception_fichier_ouverture);
     }
 
@@ -130,7 +131,7 @@ void close_bitstream(struct bitstream *b)
         flush_bitstream(b);
     }
 
-    if (fclose(b->fichier) != 0) 
+    if (fclose(b->fichier) == EOF) 
     {
         EXCEPTION_LANCE(Exception_fichier_fermeture);
     }
@@ -165,11 +166,11 @@ void put_bit(struct bitstream *b, Booleen bit)
     if (b->nb_bits_dans_buffer == NB_BITS)
     {
         flush_bitstream(b);
-        return;
     }    
 
+    b->buffer = pose_bit(b->buffer, 7 - b->nb_bits_dans_buffer, bit);
+    b->nb_bits_dans_buffer++;
 }
-
 
 /*
  * Cette fonction lit un bit du buffer (du poid fort au poid faible)
