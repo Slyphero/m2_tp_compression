@@ -103,7 +103,9 @@ void flush_bitstream(struct bitstream *b)
 {
     if (b->ecriture == Vrai && b->nb_bits_dans_buffer > 0) 
     {
-        
+        fputc(buffer, b->fichier);
+        b->buffer = 0;
+        b->nb_bits_dans_buffer = 0;        
     }
 }
 
@@ -120,13 +122,12 @@ void close_bitstream(struct bitstream *b)
 {
 
 
-
-
-
-
-
-
-}
+    int return_code = fclose(b->fichier);
+    if (return_code == EOF) 
+    {
+        EXCEPTION_LANCE(Exception_fichier_fermeture);
+    }
+}   
 
 /*
  * Cette fonction ajoute le "bit" dans le buffer.
