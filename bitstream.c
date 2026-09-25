@@ -58,11 +58,11 @@ struct bitstream *open_bitstream(const char *fichier, const char* mode)
 {
     struct bitstream *bstream;
     ALLOUER(bstream, 1);
-    bstream->ecriture = (mode[0] == 'r') ? Faux : Vrai;
+    bstream->ecriture = mode[0] != 'r';
 
     if (strcmp(fichier, "-") == 0) 
     {
-        if (bstream->ecriture == Faux) 
+        if (!bstream->ecriture) 
         {
             bstream->fichier = stdin;
         } 
@@ -78,7 +78,7 @@ struct bitstream *open_bitstream(const char *fichier, const char* mode)
         bstream->fichier = fopen(fichier, mode); 
     }
 
-    if (bstream->fichier == NULL) 
+    if (!bstream->fichier) 
     {
         free(bstream);
         EXCEPTION_LANCE(Exception_fichier_ouverture);
@@ -103,10 +103,11 @@ struct bitstream *open_bitstream(const char *fichier, const char* mode)
  */
 void flush_bitstream(struct bitstream *b)
 {
-    if (b->ecriture == Vrai && b->nb_bits_dans_buffer > 0) 
+    if (b->ecriture && b->nb_bits_dans_buffer > 0) 
     {
         if (fputc(b->buffer, b->fichier) == EOF) 
         {
+            free(b);
             EXCEPTION_LANCE(Exception_fichier_ecriture);
         }
 
@@ -133,6 +134,7 @@ void close_bitstream(struct bitstream *b)
 
     if (fclose(b->fichier) == EOF) 
     {
+        free(b);
         EXCEPTION_LANCE(Exception_fichier_fermeture);
     }
 
@@ -160,6 +162,7 @@ void put_bit(struct bitstream *b, Booleen bit)
 {
     if (!b->ecriture)
     {
+        free(b);
         EXCEPTION_LANCE(Exception_fichier_ecriture_dans_fichier_ouvert_en_lecture);
     }
 
@@ -197,20 +200,13 @@ void put_bit(struct bitstream *b, Booleen bit)
 
 Booleen get_bit(struct bitstream *b)
 {
+    if (b->ecriture)
+    {
+        free(b);
+        EXCEPTION_LANCE(Exception_fichier_lecture_dans_fichier_ouvert_en_ecriture);
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+    return 0 ; /* pour enlever un warning du compilateur */
 }
 
 /*
