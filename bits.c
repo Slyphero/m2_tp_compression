@@ -8,12 +8,10 @@
  * Pour v=11 nb=8 on va écrire les bits : 00001011 dans le fichier
  */
 
-void put_bits(struct bitstream *b, unsigned int nb, unsigned long v)
-{
-
-
-
-
+void put_bits(struct bitstream *b, unsigned int nb, unsigned long v) {
+	for (int i = nb - 1; i >= 0; --i) {
+		put_bit(b, prend_bit(v, i));
+	}
 }
 
 
