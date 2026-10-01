@@ -24,12 +24,11 @@
  * Puis on en extrait les bits un par un
  * jusqu'à ce qu'il soit vide.
  */
-struct bitstream
- {
-  FILE          *fichier ;		     /* En lecture ou Ecriture */
-  Buffer_Bit     buffer ;		     /* Tampon intermediaire */
-  Position_Bit   nb_bits_dans_buffer ;	     /* Nb bits dans le tampon */
-  Booleen        ecriture ;		     /* Faux, si ouvert avec "r" */
+struct bitstream {
+    FILE          *fichier ;		     /* En lecture ou Ecriture */
+    Buffer_Bit     buffer ;		         /* Tampon intermediaire */
+    Position_Bit   nb_bits_dans_buffer ; /* Nb bits dans le tampon */
+    Booleen        ecriture ;		     /* Faux, si ouvert avec "r" */
  } ;
 
 /*
@@ -53,34 +52,22 @@ struct bitstream
  *         "Exception_fichier_ouverture"
  * Pour plus d'explications sur les exceptions, regardez "exception.h"
  */
-
-struct bitstream *open_bitstream(const char *fichier, const char* mode) 
-{
+struct bitstream *open_bitstream(const char *fichier, const char* mode) {
     struct bitstream *bstream;
     ALLOUER(bstream, 1);
     bstream->ecriture = mode[0] != 'r';
 
-    if (strcmp(fichier, "-") == 0) 
-    {
-        if (!bstream->ecriture) 
-        {
+    if (strcmp(fichier, "-") == 0) {
+        if (!bstream->ecriture) {
             bstream->fichier = stdin;
-        } 
-
-        else 
-        {
+        } else {
             bstream->fichier = stdout;
         }
-    } 
-
-    else 
-    {
-        bstream->fichier = fopen(fichier, mode); 
+    } else {
+        bstream->fichier = fopen(fichier, mode);
     }
 
-    if (!bstream->fichier) 
-    {
-        free(bstream);
+    if (!bstream->fichier) {
         EXCEPTION_LANCE(Exception_fichier_ouverture);
     }
 
@@ -89,7 +76,7 @@ struct bitstream *open_bitstream(const char *fichier, const char* mode)
 
 /*
  * Cette fonction ne fait rien si le fichier est ouvert en lecture.
- * 
+ *
  * Si le buffer n'est pas vide :
  *    - Cette fonction stocke le buffer dans le fichier
  *      que le buffer soit "complet" ou non.
@@ -99,20 +86,16 @@ struct bitstream *open_bitstream(const char *fichier, const char* mode)
  * en écriture.
  *
  * Si il y a une erreur d'écriture, elle lance l'exception :
- *         "Exception_fichier_ecriture"  
+ *         "Exception_fichier_ecriture"
  */
-void flush_bitstream(struct bitstream *b)
-{
-    if (b->ecriture && b->nb_bits_dans_buffer > 0) 
-    {
-        if (fputc(b->buffer, b->fichier) == EOF) 
-        {
-            free(b);
-            EXCEPTION_LANCE(Exception_fichier_ecriture);
-        }
+void flush_bitstream(struct bitstream *b) {
+  	if (b->ecriture && b->nb_bits_dans_buffer > 0) {
+    	if (fputc(b->buffer, b->fichier) == EOF) {
+        	EXCEPTION_LANCE(Exception_fichier_ecriture);
+    	}
 
-        b->buffer = 0;
-        b->nb_bits_dans_buffer = 0;        
+    	b->buffer = 0;
+        b->nb_bits_dans_buffer = 0;
     }
 }
 
@@ -124,22 +107,17 @@ void flush_bitstream(struct bitstream *b)
  * Si jamais, il y a une erreur de fermeture, on lance l'exception
  *         Exception_fichier_fermeture
  */
-
-void close_bitstream(struct bitstream *b)
-{   
-    if (b->ecriture)
-    {
+void close_bitstream(struct bitstream *b) {
+    if (b->ecriture) {
         flush_bitstream(b);
     }
 
-    if (fclose(b->fichier) == EOF) 
-    {
-        free(b);
+    if (fclose(b->fichier) == EOF) {
         EXCEPTION_LANCE(Exception_fichier_fermeture);
     }
 
     free(b);
-}   
+}
 
 /*
  * Cette fonction ajoute le "bit" dans le buffer.
@@ -157,19 +135,14 @@ void close_bitstream(struct bitstream *b)
  * Si le fichier est ouvert en lecture, on lance l'exception
  *         Exception_fichier_ecriture_dans_fichier_ouvert_en_lecture
  */
-
-void put_bit(struct bitstream *b, Booleen bit)
-{
-    if (!b->ecriture)
-    {
-        free(b);
+void put_bit(struct bitstream *b, Booleen bit) {
+    if (!b->ecriture) {
         EXCEPTION_LANCE(Exception_fichier_ecriture_dans_fichier_ouvert_en_lecture);
     }
 
-    if (b->nb_bits_dans_buffer == NB_BITS)
-    {
+    if (b->nb_bits_dans_buffer == NB_BITS) {
         flush_bitstream(b);
-    }    
+    }
 
     b->buffer = pose_bit(b->buffer, 7 - b->nb_bits_dans_buffer, bit);
     b->nb_bits_dans_buffer++;
@@ -197,14 +170,22 @@ void put_bit(struct bitstream *b, Booleen bit)
  * Si le fichier est ouvert en écriture, on lance l'exception
  *         Exception_fichier_lecture_dans_fichier_ouvert_en_ecriture
  */
-
-Booleen get_bit(struct bitstream *b)
-{
-    if (b->ecriture)
-    {
-        free(b);
+Booleen get_bit(struct bitstream *b) {
+    if (b->ecriture) {
         EXCEPTION_LANCE(Exception_fichier_lecture_dans_fichier_ouvert_en_ecriture);
     }
+
+    if (b->nb_bits_dans_buffer < 1) {
+        int resultat = fgetc(b->fichier);
+        if (resultat == EOF) {
+        	EXCEPTION_LANCE(Exception_fichier_lecture);
+        } else {
+        	b->buffer = resultat;
+         	b->nb_bits_dans_buffer = 8;
+        }
+    }
+
+    return prend_bit(b->buffer, b->nb_bits_dans_buffer-- - 1);
 
     return 0 ; /* pour enlever un warning du compilateur */
 }
@@ -215,15 +196,13 @@ Booleen get_bit(struct bitstream *b)
  * VOUS NE DEVEZ PAS LES UTILISER, ELLE SONT SEULEMENT LA
  * POUR QU'IL SOIT POSSIBLE D'ECRIRE DES TESTS.
  */
-FILE *bitstream_get_file(const struct bitstream *b)
- {
-  return( b->fichier ) ;
- }
-Booleen bitstream_en_ecriture(const struct bitstream *b)
- {
-  return( b->ecriture ) ;
- }
-int bitstream_nb_bits_dans_buffer(const struct bitstream *b)
- {
-  return( b->nb_bits_dans_buffer ) ;
- }
+FILE *bitstream_get_file(const struct bitstream *b) {
+     return( b->fichier ) ;
+}
+Booleen bitstream_en_ecriture(const struct bitstream *b) {
+    return( b->ecriture ) ;
+}
+
+int bitstream_nb_bits_dans_buffer(const struct bitstream *b) {
+    return( b->nb_bits_dans_buffer ) ;
+}

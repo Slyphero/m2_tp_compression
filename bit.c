@@ -14,13 +14,10 @@
  * (Vous perdez des points de TP si vous utilisez une fonction travaillant
  * avec des nombres flottants)
  */
-
-unsigned int nb_bits_utile(unsigned long v)
-{
+unsigned int nb_bits_utile(unsigned long v) {
 	unsigned int utiles = 0;
 
-	while (v > 0) 
-	{
+	while (v > 0) {
 		v >>= 1;
 		utiles++;
 	}
@@ -47,9 +44,7 @@ unsigned int nb_bits_utile(unsigned long v)
  * (Vous perdez des points de TP si vous utilisez une fonction travaillant
  * avec des nombres flottants)
  */
-
-unsigned long pow2(Position_Bit position)
-{
+unsigned long pow2(Position_Bit position) {
 	return (unsigned long) 1 << position;
 }
 
@@ -61,11 +56,10 @@ unsigned long pow2(Position_Bit position)
  * prend_bit(2,1) ==> 1
  * prend_bit(2,2) ==> 0
  */
-
-Booleen prend_bit(unsigned long c,	     /* L'entier où on prend le bit */
-		  Position_Bit position	     /* La position du bit pris */
-		  )
-{
+Booleen prend_bit(
+	unsigned long c,	  /* L'entier où on prend le bit */
+	Position_Bit position /* La position du bit pris */
+) {
 	c >>= position;
 	return c & 1; 
 }
@@ -75,19 +69,16 @@ Booleen prend_bit(unsigned long c,	     /* L'entier où on prend le bit */
  * Si "bit" est à Faux            on met le bit à 0
  * Si "bit" est différent de Faux on met le bit à 1
  */
-
-unsigned long pose_bit(unsigned long c,	      /* Entier à modifier */
-		       Position_Bit position, /* Position du bit à modifié */
-		       Booleen      bit	      /* Nouvelle valeur du bit */
-		       )
-{
+unsigned long pose_bit(
+	unsigned long c, /* Entier à modifier */
+	Position_Bit position, /* Position du bit à modifié */
+	Booleen bit /* Nouvelle valeur du bit */
+) {
 	unsigned long mask = pow2(position);
-	if (bit) 
-	{
+
+	if (bit) {
 		return c | mask;
-	} 
-	else 
-	{
+	} else {
 		return c & ~mask;
 	}
 }
