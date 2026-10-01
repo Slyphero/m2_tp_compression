@@ -22,7 +22,7 @@ unsigned int nb_bits_utile(unsigned long v) {
 		utiles++;
 	}
 
-	return utiles; 
+	return utiles;
 }
 
 /*
@@ -55,25 +55,25 @@ unsigned long pow2(Position_Bit position) {
  * prend_bit(2,0) ==> 0
  * prend_bit(2,1) ==> 1
  * prend_bit(2,2) ==> 0
+ *
+ * @param c : Entier où on prend le bit
+ * @param position : La position du bit pris
  */
-Booleen prend_bit(
-	unsigned long c,	  /* L'entier où on prend le bit */
-	Position_Bit position /* La position du bit pris */
-) {
+Booleen prend_bit(unsigned long c, Position_Bit position) {
 	c >>= position;
-	return c & 1; 
+	return c & 1;
 }
 
 /*
  * Idem pour le stockage, on stocke la valeur "bit" à la position indiquée.
  * Si "bit" est à Faux            on met le bit à 0
  * Si "bit" est différent de Faux on met le bit à 1
+ *
+ * @param c : Entier à modifier
+ * @param position : Position du bit à modifier
+ * @param bit : Nouvelle valeur du bit
  */
-unsigned long pose_bit(
-	unsigned long c, /* Entier à modifier */
-	Position_Bit position, /* Position du bit à modifié */
-	Booleen bit /* Nouvelle valeur du bit */
-) {
+unsigned long pose_bit(unsigned long c, Position_Bit position, Booleen bit) {
 	unsigned long mask = pow2(position);
 
 	if (bit) {

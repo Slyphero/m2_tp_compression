@@ -186,8 +186,6 @@ Booleen get_bit(struct bitstream *b) {
     }
 
     return prend_bit(b->buffer, b->nb_bits_dans_buffer-- - 1);
-
-    return 0 ; /* pour enlever un warning du compilateur */
 }
 
 /*
