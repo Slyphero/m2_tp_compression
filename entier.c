@@ -1,3 +1,4 @@
+#include "bit.h"
 #include "bits.h"
 #include "entier.h"
 
@@ -12,7 +13,7 @@
  *
  * Le nombre est codé par la concaténation du PREFIXE et SUFFIXE
  * Le suffixe est en fait le nombre entier sauf le premier bit a 1
- * 
+ *
  * Nombre de bits |    PRÉFIXE     | nombres codés | SUFFIXE
  *       0        |       00       |      0        |
  *     	 1        |       010      |  1 (pas 0)    |
@@ -39,19 +40,14 @@ static char *prefixes[] = { "00", "010", "011", "1000", "1001", "1010", "1011",
 			    "11000", "11001", "11010", "11011", "11100",
 			    "11101", "11110", "111110", "111111" } ;
 
-void put_entier(struct bitstream *b, unsigned int f)
-{
+void put_entier(struct bitstream *b, unsigned int f) {
+	int nb_bits = nb_bits_utile(f);
+	put_bit_string(b, prefixes[nb_bits]);
 
-
-
-
-
-
-
-
-
-
-
+	int nb_bits_suffixe = nb_bits - 1;
+	if (nb_bits_suffixe >= 0) {
+		put_bits(b, nb_bits_suffixe, f);
+	}
 }
 
 /*
@@ -62,41 +58,8 @@ void put_entier(struct bitstream *b, unsigned int f)
  * Ou bien parcourir l'arbre des états 8 bits par 8 bits (voir le cours)
  * Mais je ne vous le demande pas
  */
+unsigned int get_entier(struct bitstream *b) {
 
-unsigned int get_entier(struct bitstream *b)
-{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
 }
 
 /*

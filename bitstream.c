@@ -185,7 +185,8 @@ Booleen get_bit(struct bitstream *b) {
         }
     }
 
-    return prend_bit(b->buffer, b->nb_bits_dans_buffer-- - 1);
+    b->nb_bits_dans_buffer--;
+    return prend_bit(b->buffer, b->nb_bits_dans_buffer);
 }
 
 /*

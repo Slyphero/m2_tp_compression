@@ -23,8 +23,8 @@ void put_bits(struct bitstream *b, unsigned int nb, unsigned long v) {
 unsigned int get_bits(struct bitstream *b, unsigned int nb) {
 	unsigned int resultat = 0;
 
-	for (int i = nb - 1; i >= 0; --i) {
-		resultat = pose_bit(resultat, i, get_bit(b));
+	while (nb--) {
+		resultat = 2 * resultat | get_bit(b);
 	}
 
 	return resultat;
@@ -38,9 +38,7 @@ unsigned int get_bits(struct bitstream *b, unsigned int nb) {
  * Comme d'habitude le caractère '0' c'est Faux les autres sont vrai
  */
 void put_bit_string(struct bitstream *b, const char *bits) {
-	int i = 0;
-	while (bits[i] != '\0') {
-		bits[i] == '0' ? (put_bit(b, 0)) : (put_bit(b, 1));
-		i++;
+	while (*bits) {
+		put_bit(b, *bits++ != '0');
 	}
 }
