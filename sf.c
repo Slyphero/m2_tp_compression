@@ -28,26 +28,25 @@ struct shannon_fano
  * Allocation des la structure et remplissage des champs pour initialiser
  * le tableau des événements avec l'événement ESCAPE (avec une occurrence).
  */
-struct shannon_fano* open_shannon_fano()
-{
+struct shannon_fano* open_shannon_fano() {
+	struct shannon_fano *sf;
+	ALLOUER(sf, 1);
+	sf->nb_evenements = 1;
 
+	struct evenement e;
+	e.valeur = VALEUR_ESCAPE;
+	e.nb_occurrences = 1;
 
+	sf->evenements[0] = e;
 
-
-
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+	return sf;
 }
 
 /*
  * Fermeture (libération mémoire)
  */
-void close_shannon_fano(struct shannon_fano *sf)
-{
-
+void close_shannon_fano(struct shannon_fano *sf) {
+	free(sf);
 }
 
 /*
