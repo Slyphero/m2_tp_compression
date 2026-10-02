@@ -113,7 +113,20 @@ static int trouve_separation(const struct shannon_fano *sf,
 static void encode_position(struct bitstream *bs,
 	                        struct shannon_fano *sf,
 		                    int position) {
+	int min = 0;
+	int max = sf->nb_evenements - 1;
 
+	while (min < max) {
+		int separation = trouve_separation(sf, min, max);
+
+		if (position <= separation) {
+			put_bit(bs, 0);
+			max = separation;
+		} else {
+			put_bit(bs, 1);
+			min = separation + 1;
+		}
+	}
 }
 
 /*
