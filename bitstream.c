@@ -25,10 +25,10 @@
  * jusqu'à ce qu'il soit vide.
  */
 struct bitstream {
-    FILE          *fichier ;		     /* En lecture ou Ecriture */
-    Buffer_Bit     buffer ;		         /* Tampon intermediaire */
-    Position_Bit   nb_bits_dans_buffer ; /* Nb bits dans le tampon */
-    Booleen        ecriture ;		     /* Faux, si ouvert avec "r" */
+	FILE          *fichier ;		     /* En lecture ou Ecriture */
+	Buffer_Bit     buffer ;		         /* Tampon intermediaire */
+	Position_Bit   nb_bits_dans_buffer ; /* Nb bits dans le tampon */
+	Booleen        ecriture ;		     /* Faux, si ouvert avec "r" */
  } ;
 
 /*
@@ -53,12 +53,12 @@ struct bitstream {
  * Pour plus d'explications sur les exceptions, regardez "exception.h"
  */
 struct bitstream *open_bitstream(const char *fichier, const char* mode) {
-    struct bitstream *bstream;
-    ALLOUER(bstream, 1);
-    bstream->ecriture = mode[0] != 'r';
+	struct bitstream *bstream;
+	ALLOUER(bstream, 1);
+	bstream->ecriture = mode[0] != 'r';
 
-    if (strcmp(fichier, "-") == 0) {
-        if (!bstream->ecriture) {
+	if (strcmp(fichier, "-") == 0) {
+		if (!bstream->ecriture) {
             bstream->fichier = stdin;
         } else {
             bstream->fichier = stdout;

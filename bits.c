@@ -23,15 +23,14 @@ void put_bits(struct bitstream *b, unsigned int nb, unsigned long v) {
  * 00->0 01->1 10->2 11->3
  */
 
-unsigned int get_bits(struct bitstream *b, unsigned int nb)
-{
+unsigned int get_bits(struct bitstream *b, unsigned int nb) {
+	unsigned int resultat = 0;
 
+	for (int i = nb - 1; i >= 0; --i) {
+		resultat = pose_bit(resultat, i, get_bit(b));
+	}
 
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+	return resultat;
 }
 
 /*
@@ -44,6 +43,5 @@ return 0 ; /* pour enlever un warning du compilateur */
 
 void put_bit_string(struct bitstream *b, const char *bits)
 {
-
 
 }
