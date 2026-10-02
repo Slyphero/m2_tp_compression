@@ -36,17 +36,19 @@
  *
  */
 
-static char *prefixes[] = { "00", "010", "011", "1000", "1001", "1010", "1011",
-			    "11000", "11001", "11010", "11011", "11100",
-			    "11101", "11110", "111110", "111111" } ;
+static char *prefixes[] = {
+	"00",
+	"010", "011",
+	"1000", "1001", "1010", "1011",
+	"11000", "11001", "11010", "11011", "11100", "11101", "11110",
+	"111110", "111111"
+} ;
 
 void put_entier(struct bitstream *b, unsigned int f) {
 	int nb_bits = nb_bits_utile(f);
 	put_bit_string(b, prefixes[nb_bits]);
-
-	int nb_bits_suffixe = nb_bits - 1;
-	if (nb_bits_suffixe >= 0) {
-		put_bits(b, nb_bits_suffixe, f);
+	if (nb_bits > 0) {
+		put_bits(b, nb_bits - 1, f);
 	}
 }
 
@@ -59,7 +61,26 @@ void put_entier(struct bitstream *b, unsigned int f) {
  * Mais je ne vous le demande pas
  */
 unsigned int get_entier(struct bitstream *b) {
+	int nb_bits = 0;
+	int i = 0;
+	char bit_buffer = get_bit(b) ? '1' : '0';
 
+	while (prefixes[nb_bits][i] != 0) {
+		if (bit_buffer != prefixes[nb_bits][i]) {
+			nb_bits++;
+		} else {
+			i++;
+			if (prefixes[nb_bits][i] != '\0') {
+				bit_buffer = get_bit(b) ? '1' : '0';
+			}
+		}
+	}
+
+	if (nb_bits < 1) {
+		return nb_bits;
+	} else {
+		return pow2(nb_bits - 1) | get_bits(b, nb_bits - 1);
+	}
 }
 
 /*
