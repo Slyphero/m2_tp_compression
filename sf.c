@@ -80,22 +80,12 @@ static int trouve_position(const struct shannon_fano *sf, int evenement) {
  *
  * L'algorithme (trivial) n'est pas facile à trouver, réfléchissez bien.
  */
-static int trouve_separation(const struct shannon_fano *sf
-			     , int position_min
-			     , int position_max)
-{
+static int trouve_separation(const struct shannon_fano *sf,
+    						 int position_min,
+           					 int position_max) {
+	int indice_separation = position_min;
 
-
-
-
-
-
-
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+	return indice_separation;
 }
 
 /*
