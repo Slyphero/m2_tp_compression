@@ -97,28 +97,26 @@ unsigned int get_entier(struct bitstream *b) {
  *   -3 --> 1 2
  *
  */
+void put_entier_signe(struct bitstream *b, int i) {
+	Booleen est_negatif = (i < 0);
+	put_bit(b, est_negatif);
 
-void put_entier_signe(struct bitstream *b, int i)
-{
-
-
-
-
-
-
-
-
-
-
+	if (est_negatif) {
+		put_entier(b, -i - 1);
+	} else {
+		put_entier(b, i);
+	}
 }
+
 /*
  *
  */
-int get_entier_signe(struct bitstream *b)
-{
+int get_entier_signe(struct bitstream *b) {
+	Booleen est_negatif = get_bit(b);
 
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+	if (est_negatif) {
+		return -(get_entier(b) + 1);
+	} else {
+		return get_entier(b);
+	}
 }
