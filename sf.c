@@ -55,17 +55,14 @@ void close_shannon_fano(struct shannon_fano *sf) {
  * Si l'événement n'est pas trouvé, on retourne la position
  * de l'événement ESCAPE.
  */
+static int trouve_position(const struct shannon_fano *sf, int evenement) {
+	for (int i = 1; i < sf->nb_evenements; ++i) {
+		if (sf->evenements[i].valeur == evenement) {
+			return i;
+		}
+	}
 
-static int trouve_position(const struct shannon_fano *sf, int evenement)
-{
-
-
-
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+	return 0;
 }
 
 /*
