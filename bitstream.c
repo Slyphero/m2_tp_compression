@@ -24,7 +24,8 @@
  * Puis on en extrait les bits un par un
  * jusqu'à ce qu'il soit vide.
  */
-struct bitstream {
+struct bitstream
+{
 	FILE          *fichier ;		     /* En lecture ou Ecriture */
 	Buffer_Bit     buffer ;		         /* Tampon intermediaire */
 	Position_Bit   nb_bits_dans_buffer ; /* Nb bits dans le tampon */
@@ -52,22 +53,30 @@ struct bitstream {
  *         "Exception_fichier_ouverture"
  * Pour plus d'explications sur les exceptions, regardez "exception.h"
  */
-struct bitstream *open_bitstream(const char *fichier, const char* mode) {
+struct bitstream *open_bitstream(const char *fichier, const char* mode)
+{
 	struct bitstream *bstream;
 	ALLOUER(bstream, 1);
 	bstream->ecriture = mode[0] != 'r';
 
-	if (strcmp(fichier, "-") == 0) {
-		if (!bstream->ecriture) {
+	if (strcmp(fichier, "-") == 0)
+	{
+		if (!bstream->ecriture)
+		{
             bstream->fichier = stdin;
-        } else {
+        }
+		else
+		{
             bstream->fichier = stdout;
         }
-    } else {
+    }
+	else
+	{
         bstream->fichier = fopen(fichier, mode);
     }
 
-    if (!bstream->fichier) {
+    if (!bstream->fichier)
+    {
         EXCEPTION_LANCE(Exception_fichier_ouverture);
     }
 
@@ -88,9 +97,12 @@ struct bitstream *open_bitstream(const char *fichier, const char* mode) {
  * Si il y a une erreur d'écriture, elle lance l'exception :
  *         "Exception_fichier_ecriture"
  */
-void flush_bitstream(struct bitstream *b) {
-  	if (b->ecriture && b->nb_bits_dans_buffer > 0) {
-    	if (fputc(b->buffer, b->fichier) == EOF) {
+void flush_bitstream(struct bitstream *b)
+{
+  	if (b->ecriture && b->nb_bits_dans_buffer > 0)
+    {
+    	if (fputc(b->buffer, b->fichier) == EOF)
+        {
         	EXCEPTION_LANCE(Exception_fichier_ecriture);
     	}
 
@@ -107,12 +119,15 @@ void flush_bitstream(struct bitstream *b) {
  * Si jamais, il y a une erreur de fermeture, on lance l'exception
  *         Exception_fichier_fermeture
  */
-void close_bitstream(struct bitstream *b) {
-    if (b->ecriture) {
+void close_bitstream(struct bitstream *b)
+{
+    if (b->ecriture)
+    {
         flush_bitstream(b);
     }
 
-    if (fclose(b->fichier) == EOF) {
+    if (fclose(b->fichier) == EOF)
+    {
         EXCEPTION_LANCE(Exception_fichier_fermeture);
     }
 
@@ -135,12 +150,15 @@ void close_bitstream(struct bitstream *b) {
  * Si le fichier est ouvert en lecture, on lance l'exception
  *         Exception_fichier_ecriture_dans_fichier_ouvert_en_lecture
  */
-void put_bit(struct bitstream *b, Booleen bit) {
-    if (!b->ecriture) {
+void put_bit(struct bitstream *b, Booleen bit)
+{
+    if (!b->ecriture)
+    {
         EXCEPTION_LANCE(Exception_fichier_ecriture_dans_fichier_ouvert_en_lecture);
     }
 
-    if (b->nb_bits_dans_buffer == NB_BITS) {
+    if (b->nb_bits_dans_buffer == NB_BITS)
+    {
         flush_bitstream(b);
     }
 
@@ -170,16 +188,22 @@ void put_bit(struct bitstream *b, Booleen bit) {
  * Si le fichier est ouvert en écriture, on lance l'exception
  *         Exception_fichier_lecture_dans_fichier_ouvert_en_ecriture
  */
-Booleen get_bit(struct bitstream *b) {
-    if (b->ecriture) {
+Booleen get_bit(struct bitstream *b)
+{
+    if (b->ecriture)
+    {
         EXCEPTION_LANCE(Exception_fichier_lecture_dans_fichier_ouvert_en_ecriture);
     }
 
-    if (b->nb_bits_dans_buffer < 1) {
+    if (b->nb_bits_dans_buffer < 1)
+    {
         int resultat = fgetc(b->fichier);
-        if (resultat == EOF) {
+        if (resultat == EOF)
+        {
         	EXCEPTION_LANCE(Exception_fichier_lecture);
-        } else {
+        }
+        else
+        {
         	b->buffer = resultat;
          	b->nb_bits_dans_buffer = 8;
         }
@@ -195,13 +219,17 @@ Booleen get_bit(struct bitstream *b) {
  * VOUS NE DEVEZ PAS LES UTILISER, ELLE SONT SEULEMENT LA
  * POUR QU'IL SOIT POSSIBLE D'ECRIRE DES TESTS.
  */
-FILE *bitstream_get_file(const struct bitstream *b) {
+FILE *bitstream_get_file(const struct bitstream *b)
+{
      return( b->fichier ) ;
 }
-Booleen bitstream_en_ecriture(const struct bitstream *b) {
+
+Booleen bitstream_en_ecriture(const struct bitstream *b)
+{
     return( b->ecriture ) ;
 }
 
-int bitstream_nb_bits_dans_buffer(const struct bitstream *b) {
+int bitstream_nb_bits_dans_buffer(const struct bitstream *b)
+{
     return( b->nb_bits_dans_buffer ) ;
 }
