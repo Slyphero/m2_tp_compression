@@ -59,14 +59,19 @@ void close_shannon_fano(struct shannon_fano *sf)
  */
 static int trouve_position(const struct shannon_fano *sf, int evenement)
 {
-	for (int i = 1; i < sf->nb_evenements; ++i)
+    int position_escape = 0;
+	for (int i = 0; i < sf->nb_evenements; ++i)
 	{
 		if (sf->evenements[i].valeur == evenement)
 		{
 			return i;
 		}
+		if (sf->evenements[i].valeur == VALEUR_ESCAPE)
+		{
+		    position_escape = i;
+		}
 	}
-	return 0;
+	return position_escape;
 }
 
 /*
@@ -179,9 +184,10 @@ void put_entier_shannon_fano(struct bitstream *bs,
     int position = trouve_position(sf, evenement);
     encode_position(bs, sf, position);
 
-    if (position == 0)
+    if (sf->evenements[position].valeur == VALEUR_ESCAPE)
     {
-        put_bits(bs, 8, (unsigned int) evenement);
+        put_bits(bs, 32, (unsigned int) evenement);
+        incremente_et_ordonne(sf, position);
         position = sf->nb_evenements;
         sf->evenements[position].valeur = evenement;
         sf->evenements[position].nb_occurrences = 0;
