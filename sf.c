@@ -200,9 +200,25 @@ void put_entier_shannon_fano(struct bitstream *bs,
 /*
  * Fonction inverse de "encode_position"
  */
-static int decode_position(struct bitstream *bs,struct shannon_fano *sf)
+static int decode_position(struct bitstream *bs, struct shannon_fano *sf)
 {
-	return 0 ; /* pour enlever un warning du compilateur */
+    int min = 0;
+    int max = sf->nb_evenements - 1;
+
+    while (min < max)
+    {
+        int separation = trouve_separation(sf, min, max);
+        if (get_bit(bs) == 0)
+        {
+            max = separation;
+        }
+        else
+        {
+            min = separation + 1;
+        }
+    }
+
+    return min;
 }
 
 /*
