@@ -155,7 +155,15 @@ static void encode_position(struct bitstream *bs,
  */
 static void incremente_et_ordonne(struct shannon_fano *sf, int position)
 {
+    sf->evenements[position].nb_occurrences++;
 
+    while (position > 0 && sf->evenements[position].nb_occurrences > sf->evenements[position - 1].nb_occurrences)
+    {
+        struct evenement tmp = sf->evenements[position];
+        sf->evenements[position] = sf->evenements[position - 1];
+        sf->evenements[position - 1] = tmp;
+        position--;
+    }
 }
 
 /*
