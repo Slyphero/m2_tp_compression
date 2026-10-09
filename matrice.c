@@ -6,42 +6,43 @@
  * Allocation d'une matrice carrée de float.
  * (tableau de pointeur sur tableau de flottants)
  */
-
 Matrice * allocation_matrice_float(int height, int width)
 {
+    Matrice *m;
+    ALLOUER(m, 1);
 
+    m->width = width;
+    m->height = height;
 
+    ALLOUER(m->t, height);
 
+    for (int i = 0; i < height; i++)
+    {
+        ALLOUER(m->t[i], width);
+    }
 
-
-
-
-
-
-
-return 0 ; /* pour enlever un warning du compilateur */
+    return m;
 }
 
 /*
  * Libération
  */
-
 void liberation_matrice_float(Matrice *m)
 {
+    for (int i = 0; i < m->height; i++)
+    {
+        free(m->t[i]);
+    }
 
-
-
-
-
-
+    free(m->t);
+    free(m);
 }
 
 
 /*
  * Produit matriciel de matrices carrées (le résultat est déjà alloué).
- *             resultat = a * b 
+ *             resultat = a * b
  */
-
 void produit_matrices_float(const Matrice *a, const Matrice *b,
 			    Matrice *resultat)
  {
@@ -113,7 +114,7 @@ void transposition_matrice(const Matrice *a, Matrice *resultat)
 void affiche_matrice(const Matrice *a, FILE *f)
  {
    int i, j ;
-   
+
    for(j=0;j<a->height;j++)
      {
        for(i=0;i<a->width;i++)
@@ -163,4 +164,3 @@ void affiche_matrice_image(const Matrice *m)
   pclose(f) ;
   liberation_image(image) ;
  }
-
