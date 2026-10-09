@@ -66,7 +66,6 @@ static int trouve_position(const struct shannon_fano *sf, int evenement)
 			return i;
 		}
 	}
-
 	return 0;
 }
 
@@ -176,7 +175,19 @@ void put_entier_shannon_fano(struct bitstream *bs,
 	                         struct shannon_fano *sf,
 							 int evenement)
 {
+    int position = trouve_position(sf, evenement);
 
+    encode_position(bs, sf, position);
+    if (position == 0)
+    {
+        put_bits(bs, 8, evenement);
+        position = sf->nb_evenements;
+        sf->evenements[position].valeur = evenement;
+        sf->evenements[position].nb_occurrences = 0;
+        sf->nb_evenements++;
+    }
+
+    incremente_et_ordonne(sf, position);
 }
 
 /*
