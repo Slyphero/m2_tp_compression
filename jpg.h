@@ -7,13 +7,13 @@
 
 #include "bases.h"
 
-struct image ;
+struct image;
 
-void dct_image(int inverse, Matrice *image) ;
-void quantification(int nbe, int qualite, Matrice *extrait, int inverse) ;
-void zigzag(int nbe, int *y, int *x) ;
+void dct_image(int inverse, Matrice *image);
+void quantification(int nbe, int qualite, Matrice *extrait, int inverse);
+void zigzag(int nbe, int *y, int *x);
 
-void compresse_image(int nbe, const struct image *entree, FILE *f) ; /**/
-void decompresse_image(int nbe, struct image *entree, FILE *f) ; /**/
+void compresse_image(int nbe, const struct image *entree, FILE *f); /**/
+void decompresse_image(int nbe, struct image *entree, FILE *f);     /**/
 
 #endif

@@ -1,12 +1,12 @@
-#include "bases.h"
 #include "psycho.h"
+#include "bases.h"
 
 /*
  * Soit F1!=0 et F2!=0 deux ``fréquences'' quelconques du son avec F1!=F2
  *      A1 et A2 leurs amplitudes respectives.
  * La fréquence du son est l'indice dans le tableau "dct".
  *
- * 
+ *
  * Si   C * abs(A1)   <   abs( A2 / (F2 - F1) )
  *   Alors Annuler A1
  *
@@ -26,22 +26,4 @@
  * Il contient déjà les coefficients de la dct
  */
 
-void psycho(int nbe, float *dct, float c)
-{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
-
+void psycho(int nbe, float *dct, float c) {}

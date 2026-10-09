@@ -7,10 +7,10 @@
 
 #include "bitstream.h"
 
-void put_entier(struct bitstream*, unsigned int) ;
-unsigned int get_entier(struct bitstream*) ;
+void put_entier(struct bitstream *, unsigned int);
+unsigned int get_entier(struct bitstream *);
 
-void put_entier_signe(struct bitstream*, int) ;
-int get_entier_signe(struct bitstream*) ;
+void put_entier_signe(struct bitstream *, int);
+int get_entier_signe(struct bitstream *);
 
 #endif

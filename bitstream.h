@@ -13,22 +13,21 @@
  * On pourrai prendre "long" mais il faudrait alors
  * déterminer si la machine est Little or Big Endian
  */
-typedef unsigned char Buffer_Bit ;
+typedef unsigned char Buffer_Bit;
 /*
  * Nombre de bit dans le buffer
  */
-#define NB_BITS (8*sizeof(Buffer_Bit))
+#define NB_BITS (8 * sizeof(Buffer_Bit))
 
-struct bitstream ;
+struct bitstream;
 
-struct bitstream  *open_bitstream(const char *fichier, const char* mode) ;
-void              close_bitstream(struct bitstream *b) ;
-void                      put_bit(struct bitstream *b, Booleen bit) ;
-Booleen 	          get_bit(struct bitstream *b) ;
+struct bitstream *open_bitstream(const char *fichier, const char *mode);
+void close_bitstream(struct bitstream *b);
+void put_bit(struct bitstream *b, Booleen bit);
+Booleen get_bit(struct bitstream *b);
 
-FILE          *bitstream_get_file(const struct bitstream *b) ; /**/
-Booleen     bitstream_en_ecriture(const struct bitstream *b) ; /**/
-int bitstream_nb_bits_dans_buffer(const struct bitstream *b) ; /**/
-
+FILE *bitstream_get_file(const struct bitstream *b);          /**/
+Booleen bitstream_en_ecriture(const struct bitstream *b);     /**/
+int bitstream_nb_bits_dans_buffer(const struct bitstream *b); /**/
 
 #endif

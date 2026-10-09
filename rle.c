@@ -1,6 +1,6 @@
+#include "rle.h"
 #include "bases.h"
 #include "intstream.h"
-#include "rle.h"
 
 /*
  * Avant propos sur les "intstream"
@@ -41,62 +41,11 @@
  * En perdant le moins d'information possible.
  */
 
-void compresse(struct intstream *entier, struct intstream *entier_signe
-	       , int nbe, const float *dct)
-{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
+void compresse(struct intstream *entier, struct intstream *entier_signe, int nbe,
+               const float *dct) {}
 
 /*
  * Lit le tableau de flottant qui est dans les deux "instream"
  */
 
-void decompresse(struct intstream *entier, struct intstream *entier_signe
-		 , int nbe, float *dct)
-{
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
+void decompresse(struct intstream *entier, struct intstream *entier_signe, int nbe, float *dct) {}

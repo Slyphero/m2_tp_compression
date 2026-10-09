@@ -3,7 +3,7 @@
 
 #include <math.h>
 
-void coef_dct(Matrice *table) ;
-void dct(int inverse, int nbe, const float *entree, float *sortie ) ;
+void coef_dct(Matrice *table);
+void dct(int inverse, int nbe, const float *entree, float *sortie);
 
 #endif

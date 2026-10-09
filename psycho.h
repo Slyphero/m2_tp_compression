@@ -5,6 +5,6 @@
 #ifndef _HOME_EXCO_REDACTEX_COURS_TRANS_COMP_IMAGE_TP_DCT2_PSYCHO_H
 #define _HOME_EXCO_REDACTEX_COURS_TRANS_COMP_IMAGE_TP_DCT2_PSYCHO_H
 
-void psycho(int nbe, float *dct, float c) ;
+void psycho(int nbe, float *dct, float c);
 
 #endif

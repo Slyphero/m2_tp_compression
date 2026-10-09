@@ -7,19 +7,18 @@
 
 #include "bases.h"
 
-struct image
-{
-  int largeur ;
-  int hauteur ;
-  unsigned char **pixels ;
-} ;
+struct image {
+    int largeur;
+    int hauteur;
+    unsigned char **pixels;
+};
 
 #define MAXLIGNE 9999 /* Longueur maximale d'une ligne de commentaire */
 
-void lire_ligne(FILE *f, char *ligne) ;
-struct image* allocation_image(int hauteur, int largeur) ;
-void liberation_image(struct image*) ;
-struct image* lecture_image(FILE *f) ;
-void ecriture_image(FILE *f, const struct image *image) ;
+void lire_ligne(FILE *f, char *ligne);
+struct image *allocation_image(int hauteur, int largeur);
+void liberation_image(struct image *);
+struct image *lecture_image(FILE *f);
+void ecriture_image(FILE *f, const struct image *image);
 
 #endif

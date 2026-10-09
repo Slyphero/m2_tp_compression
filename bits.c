@@ -1,5 +1,5 @@
-#include "bitstream.h"
 #include "bits.h"
+#include "bitstream.h"
 
 /*
  * Oon écrit les "nb" bits de droite de "v"
@@ -7,12 +7,10 @@
  *
  * Pour v=11 nb=8 on va écrire les bits : 00001011 dans le fichier
  */
-void put_bits(struct bitstream *b, unsigned int nb, unsigned long v)
-{
-	for (int i = nb - 1; i >= 0; --i)
-	{
-		put_bit(b, prend_bit(v, i));
-	}
+void put_bits(struct bitstream *b, unsigned int nb, unsigned long v) {
+    for (int i = nb - 1; i >= 0; --i) {
+        put_bit(b, prend_bit(v, i));
+    }
 }
 
 /*
@@ -22,16 +20,14 @@ void put_bits(struct bitstream *b, unsigned int nb, unsigned long v)
  * Suivant les 2 bits dans le fichier on obtiendra :
  * 00->0 01->1 10->2 11->3
  */
-unsigned int get_bits(struct bitstream *b, unsigned int nb)
-{
-	unsigned int resultat = 0;
+unsigned int get_bits(struct bitstream *b, unsigned int nb) {
+    unsigned int resultat = 0;
 
-	while (nb--)
-	{
-		resultat = 2 * resultat | get_bit(b);
-	}
+    while (nb--) {
+        resultat = 2 * resultat | get_bit(b);
+    }
 
-	return resultat;
+    return resultat;
 }
 
 /*
@@ -41,10 +37,8 @@ unsigned int get_bits(struct bitstream *b, unsigned int nb)
  *
  * Comme d'habitude le caractère '0' c'est Faux les autres sont vrai
  */
-void put_bit_string(struct bitstream *b, const char *bits)
-{
-	while (*bits)
-	{
-		put_bit(b, *bits++ != '0');
-	}
+void put_bit_string(struct bitstream *b, const char *bits) {
+    while (*bits) {
+        put_bit(b, *bits++ != '0');
+    }
 }

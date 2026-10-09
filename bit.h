@@ -8,16 +8,16 @@
 /*
  * La valeur d'un bit.
  */
-typedef enum { Faux=0, Vrai=1 } Booleen ;
+typedef enum { Faux = 0, Vrai = 1 } Booleen;
 /*
  * Un position de bit, indique la position d'un bit dans un entier.
  * Le bit numero 0 est celui de droite (poid faible).
  */
-typedef unsigned char Position_Bit ;
+typedef unsigned char Position_Bit;
 
-unsigned int nb_bits_utile(unsigned long) ;
-unsigned long         pow2(Position_Bit) ;
-Booleen          prend_bit(unsigned long, Position_Bit) ;
-unsigned long     pose_bit(unsigned long, Position_Bit, Booleen) ;
+unsigned int nb_bits_utile(unsigned long);
+unsigned long pow2(Position_Bit);
+Booleen prend_bit(unsigned long, Position_Bit);
+unsigned long pose_bit(unsigned long, Position_Bit, Booleen);
 
 #endif
