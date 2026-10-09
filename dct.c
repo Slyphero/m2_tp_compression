@@ -44,4 +44,21 @@ void dct(int inverse,         /* ==0: DCT, !=0 DCT inverse */
          int nbe,             /* Nombre d'échantillons  */
          const float *entree, /* Le son avant transformation (DCT/INVDCT) */
          float *sortie        /* Le son après transformation */
-) {}
+) {
+    static Matrice *dct_table, *dct_inverse;
+
+    if (dct_table == NULL) {
+        dct_table = allocation_matrice_float(nbe, nbe);
+        coef_dct(dct_table);
+        dct_inverse = allocation_matrice_float(nbe, nbe);
+        transposition_matrice(dct_table, dct_inverse); 
+    }
+
+    if (inverse) {
+        // inverse != 0 => DCT inverse
+        produit_matrice_vecteur(dct_inverse, entree, sortie);
+    } else {
+        // inverse == 0 => DCT
+        produit_matrice_vecteur(dct_table, entree, sortie);
+    }
+}
