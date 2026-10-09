@@ -54,6 +54,8 @@ struct bitstream {
 struct bitstream *open_bitstream(const char *fichier, const char *mode) {
     struct bitstream *bstream;
     ALLOUER(bstream, 1);
+    bstream->buffer = 0;
+    bstream->nb_bits_dans_buffer = 0;
     bstream->ecriture = mode[0] != 'r';
 
     if (strcmp(fichier, "-") == 0) {

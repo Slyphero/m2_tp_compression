@@ -42,6 +42,10 @@ static char *prefixes[] = {"00",    "010",   "011",    "1000",  "1001",  "1010",
 
 void put_entier(struct bitstream *b, unsigned int f) {
     int nb_bits = nb_bits_utile(f);
+    if (nb_bits >= TAILLE(prefixes)) {
+        EXIT;
+    }
+    
     put_bit_string(b, prefixes[nb_bits]);
     if (nb_bits > 0) {
         put_bits(b, nb_bits - 1, f);
