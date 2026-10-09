@@ -156,7 +156,8 @@ static void incremente_et_ordonne(struct shannon_fano *sf, int position)
 {
     sf->evenements[position].nb_occurrences++;
 
-    while (position > 0 && sf->evenements[position].nb_occurrences > sf->evenements[position - 1].nb_occurrences)
+    while (position > 0 && sf->evenements[position].nb_occurrences >
+                           sf->evenements[position - 1].nb_occurrences)
     {
         struct evenement tmp = sf->evenements[position];
         sf->evenements[position] = sf->evenements[position - 1];
@@ -176,11 +177,11 @@ void put_entier_shannon_fano(struct bitstream *bs,
 							 int evenement)
 {
     int position = trouve_position(sf, evenement);
-
     encode_position(bs, sf, position);
+
     if (position == 0)
     {
-        put_bits(bs, 8, evenement);
+        put_bits(bs, 8, (unsigned int) evenement);
         position = sf->nb_evenements;
         sf->evenements[position].valeur = evenement;
         sf->evenements[position].nb_occurrences = 0;
