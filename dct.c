@@ -19,14 +19,22 @@
 
 void coef_dct(Matrice *table)
 {
+    int n = table->width;
+    double sqrt_n = sqrt( (double) n );
+    double sqrt_2 = sqrt(2.0);
 
+    for (int i = 0; i < table->width; i++)
+    {
+        table->t[0][i] = 1.0 / sqrt_n;
+    }
 
-
-
-
-
-
-
+    for (int j = 1; j < table->height; j++)
+    {
+        for (int i = 0; i < table->width; i++)
+        {
+            table->t[j][i] = (sqrt_2 / sqrt_n) * cos( j * M_PI * ((2.0 * i + 1.0) / (2.0 * n)) );
+        }
+    }
 }
 
 /*
