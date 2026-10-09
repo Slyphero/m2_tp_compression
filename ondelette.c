@@ -1,10 +1,10 @@
+#include "matrice.h"
 #include "ondelette.h"
 #include "bases.h"
 #include "bitstream.h"
 #include "exception.h"
 #include "image.h"
 #include "intstream.h"
-#include "matrice.h"
 #include "rle.h"
 #include "sf.h"
 

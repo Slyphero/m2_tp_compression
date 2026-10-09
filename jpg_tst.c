@@ -1,6 +1,6 @@
 #include "bases.h"
-#include "jpg.h"
 #include "matrice.h"
+#include "jpg.h"
 
 void dct_image_tst() {
     int i, j;

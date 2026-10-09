@@ -1,6 +1,6 @@
-#include "dct.h"
-#include "bases.h"
 #include "matrice.h"
+#include "bases.h"
+#include "dct.h"
 
 /*
  * La fonction calculant les coefficients de la DCT (et donc de l'inverse)

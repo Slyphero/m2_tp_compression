@@ -1,7 +1,7 @@
+#include "matrice.h"
 #include "jpg.h"
 #include "dct.h"
 #include "image.h"
-#include "matrice.h"
 
 /*
  * Calcul de la DCT ou de l'inverse DCT sur un petit carré de l'image.

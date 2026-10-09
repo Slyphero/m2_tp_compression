@@ -1,3 +1,4 @@
+#include "matrice.h"
 #include "bases.h"
 #include "bitstream.h"
 #include "dct.h"
@@ -5,7 +6,6 @@
 #include "image.h"
 #include "intstream.h"
 #include "jpg.h"
-#include "matrice.h"
 #include "ondelette.h"
 #include "psycho.h"
 #include "rle.h"

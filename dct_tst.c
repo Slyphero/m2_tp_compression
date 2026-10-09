@@ -1,6 +1,6 @@
 #include "bases.h"
-#include "dct.h"
 #include "matrice.h"
+#include "dct.h"
 
 #define NBE 5
 
