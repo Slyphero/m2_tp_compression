@@ -186,7 +186,7 @@ void put_entier_shannon_fano(struct bitstream *bs,
 
     if (sf->evenements[position].valeur == VALEUR_ESCAPE)
     {
-        put_bits(bs, 32, (unsigned int) evenement);
+        put_bits(bs, 8 * sizeof(int), (unsigned int) evenement);
         incremente_et_ordonne(sf, position);
         position = sf->nb_evenements;
         sf->evenements[position].valeur = evenement;
@@ -229,7 +229,26 @@ static int decode_position(struct bitstream *bs, struct shannon_fano *sf)
  */
 int get_entier_shannon_fano(struct bitstream *bs, struct shannon_fano *sf)
 {
-	return 0 ; /* pour enlever un warning du compilateur */
+    int position = decode_position(bs, sf);
+    int evenement;
+
+    if (sf->evenements[position].valeur != VALEUR_ESCAPE)
+    {
+        evenement = sf->evenements[position].valeur;
+    }
+    else
+    {
+        evenement = (int) get_bits(bs, 8 * sizeof(int));
+        incremente_et_ordonne(sf, position);
+
+        position = sf->nb_evenements;
+        sf->evenements[position].valeur = evenement;
+        sf->evenements[position].nb_occurrences = 0;
+        sf->nb_evenements++;
+    }
+
+    incremente_et_ordonne(sf, position);
+    return evenement;
 }
 
 /*
