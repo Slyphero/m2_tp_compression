@@ -48,7 +48,6 @@ void dct(int inverse,         /* ==0: DCT, !=0 DCT inverse */
     static Matrice *dct_table, *dct_inverse;
 
     if (dct_table == NULL) {
-        assert(dct_table->width == nbe);
         dct_table = allocation_matrice_float(nbe, nbe);
         coef_dct(dct_table);
         dct_inverse = allocation_matrice_float(nbe, nbe);
