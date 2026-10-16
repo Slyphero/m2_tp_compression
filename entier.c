@@ -65,18 +65,20 @@ unsigned int get_entier(struct bitstream *b) {
     int i = 0;
     char bit_buffer = get_bit(b) ? '1' : '0';
 
-    while (prefixes[nb_bits][i] != 0) {
+    while (1) {
         if (bit_buffer != prefixes[nb_bits][i]) {
             nb_bits++;
         } else {
             i++;
-            if (prefixes[nb_bits][i] != '\0') {
+            if (prefixes[nb_bits][i] == '\0') {
+                break;
+            } else {
                 bit_buffer = get_bit(b) ? '1' : '0';
             }
         }
     }
 
-    if (nb_bits < 1) {
+    if (nb_bits <= 1) {
         return nb_bits;
     } else {
         return pow2(nb_bits - 1) | get_bits(b, nb_bits - 1);

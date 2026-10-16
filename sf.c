@@ -42,7 +42,9 @@ struct shannon_fano *open_shannon_fano() {
 /*
  * Fermeture (libération mémoire)
  */
-void close_shannon_fano(struct shannon_fano *sf) { free(sf); }
+void close_shannon_fano(struct shannon_fano *sf) { 
+    free(sf); 
+}
 
 /*
  * En entrée l'événement (sa valeur, pas son code shannon-fano).
@@ -51,16 +53,13 @@ void close_shannon_fano(struct shannon_fano *sf) { free(sf); }
  * de l'événement ESCAPE.
  */
 static int trouve_position(const struct shannon_fano *sf, int evenement) {
-    int position_escape = 0;
     for (int i = 0; i < sf->nb_evenements; ++i) {
         if (sf->evenements[i].valeur == evenement) {
             return i;
         }
-        if (sf->evenements[i].valeur == VALEUR_ESCAPE) {
-            position_escape = i;
-        }
     }
-    return position_escape;
+
+    return trouve_position(sf, VALEUR_ESCAPE);
 }
 
 /*
@@ -79,7 +78,6 @@ static int trouve_position(const struct shannon_fano *sf, int evenement) {
  * L'algorithme (trivial) n'est pas facile à trouver, réfléchissez bien.
  */
 static int trouve_separation(const struct shannon_fano *sf, int position_min, int position_max) {
-    int indice_separation = position_min;
     int total_premiere_moitie = sf->evenements[position_min].nb_occurrences;
     int total_deuxieme_moitie = 0;
 
@@ -89,18 +87,17 @@ static int trouve_separation(const struct shannon_fano *sf, int position_min, in
 
     int min_difference = ABS(total_premiere_moitie - total_deuxieme_moitie);
 
-    for (int i = position_min + 1; i < position_max; ++i) {
+    for (int i = position_min + 1; i <= position_max; ++i) {
         total_premiere_moitie += sf->evenements[i].nb_occurrences;
         total_deuxieme_moitie -= sf->evenements[i].nb_occurrences;
 
         int difference = ABS(total_premiere_moitie - total_deuxieme_moitie);
         if (difference < min_difference) {
             min_difference = difference;
-            indice_separation = i;
+        } else {
+            return i - 1;
         }
     }
-
-    return indice_separation;
 }
 
 /*
@@ -157,10 +154,8 @@ void put_entier_shannon_fano(struct bitstream *bs, struct shannon_fano *sf, int 
 
     if (sf->evenements[position].valeur == VALEUR_ESCAPE) {
         put_bits(bs, 8 * sizeof(int), (unsigned int)evenement);
-        incremente_et_ordonne(sf, position);
-        position = sf->nb_evenements;
-        sf->evenements[position].valeur = evenement;
-        sf->evenements[position].nb_occurrences = 0;
+        sf->evenements[sf->nb_evenements].valeur = evenement;
+        sf->evenements[sf->nb_evenements].nb_occurrences = 1;
         sf->nb_evenements++;
     }
 
@@ -199,7 +194,7 @@ int get_entier_shannon_fano(struct bitstream *bs, struct shannon_fano *sf) {
     if (sf->evenements[position].valeur != VALEUR_ESCAPE) {
         evenement = sf->evenements[position].valeur;
     } else {
-        evenement = (int)get_bits(bs, 8 * sizeof(int));
+        evenement = get_bits(bs, 8 * sizeof(int));
         incremente_et_ordonne(sf, position);
 
         position = sf->nb_evenements;
