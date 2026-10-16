@@ -42,8 +42,8 @@ struct shannon_fano *open_shannon_fano() {
 /*
  * Fermeture (libération mémoire)
  */
-void close_shannon_fano(struct shannon_fano *sf) { 
-    free(sf); 
+void close_shannon_fano(struct shannon_fano *sf) {
+    free(sf);
 }
 
 /*
@@ -210,7 +210,9 @@ int get_entier_shannon_fano(struct bitstream *bs, struct shannon_fano *sf) {
 /*
  * Fonctions pour les tests, NE PAS MODIFIER, NE PAS UTILISER.
  */
-int sf_get_nb_evenements(struct shannon_fano *sf) { return sf->nb_evenements; }
+int sf_get_nb_evenements(struct shannon_fano *sf) {
+    return sf->nb_evenements;
+}
 
 void sf_get_evenement(struct shannon_fano *sf, int i, int *valeur, int *nb_occ) {
     *valeur = sf->evenements[i].valeur;
