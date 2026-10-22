@@ -45,7 +45,7 @@ void put_entier(struct bitstream *b, unsigned int f) {
     if (nb_bits >= TAILLE(prefixes)) {
         EXIT;
     }
-    
+
     put_bit_string(b, prefixes[nb_bits]);
     if (nb_bits > 0) {
         put_bits(b, nb_bits - 1, f);
