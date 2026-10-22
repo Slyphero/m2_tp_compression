@@ -66,4 +66,25 @@ void compresse(struct intstream *entier, struct intstream *entier_signe, int nbe
  */
 
 void decompresse(struct intstream *entier, struct intstream *entier_signe, int nbe, float *dct) {
+    int i = 0;
+    int nombre_zeros, valeur;
+
+    while (i < nbe) {
+        nombre_zeros = get_entier_intstream(entier);
+
+        for (int j = 0; j < nombre_zeros; j++) {
+            if (i >= nbe) {
+                break;
+            }
+            dct[i] = 0;
+            i++;
+        }
+
+        if (i >= nbe) {
+            break;
+        }
+        valeur = get_entier_intstream(entier_signe);
+        dct[i] = (float) valeur;
+        i++;
+    }
 }
