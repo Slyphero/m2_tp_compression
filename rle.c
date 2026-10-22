@@ -42,10 +42,28 @@
  */
 
 void compresse(struct intstream *entier, struct intstream *entier_signe, int nbe,
-               const float *dct) {}
+               const float *dct) {
+    int compteur_zeros = 0;
+
+    for (int i = 0; i < nbe; i++) {
+        int dct_convertie = (int)roundf(dct[i]);
+        if (dct_convertie == 0) {
+            compteur_zeros++;
+        } else {
+            put_entier_intstream(entier, compteur_zeros);
+            put_entier_intstream(entier_signe, dct_convertie);
+            compteur_zeros = 0;
+        }
+    }
+
+    if (compteur_zeros > 0) {
+        put_entier_intstream(entier, compteur_zeros);
+    }
+}
 
 /*
  * Lit le tableau de flottant qui est dans les deux "instream"
  */
 
-void decompresse(struct intstream *entier, struct intstream *entier_signe, int nbe, float *dct) {}
+void decompresse(struct intstream *entier, struct intstream *entier_signe, int nbe, float *dct) {
+}
