@@ -27,21 +27,21 @@
  */
 
 void psycho(int nbe, float *dct, float c) {
-	int indices_a_annuler[nbe * nbe];
-	int i = 0;
+    int indices_a_annuler[nbe * nbe];
+    int i = 0;
 
-	for (int f1 = 1; f1 < nbe; f1++) {
-		for (int f2 = 1; f2 < nbe; f2++) {
-			if (f2 != f1) {
-				if (c * ABS(dct[f1]) < ABS(dct[f2] / (f2 - f1))) {
-					indices_a_annuler[i] = f1;
-					i++;
-				}
-			}
-		}
-	}
+    for (int f1 = 1; f1 < nbe; f1++) {
+        for (int f2 = 1; f2 < nbe; f2++) {
+            if (f2 != f1) {
+                if (c * ABS(dct[f1]) < ABS(dct[f2] / (f2 - f1))) {
+                    indices_a_annuler[i] = f1;
+                    i++;
+                }
+            }
+        }
+    }
 
-	for (int j = 0; j < i; j++) {
-		dct[indices_a_annuler[j]] = 0;
-	}
+    for (int j = 0; j < i; j++) {
+        dct[indices_a_annuler[j]] = 0;
+    }
 }
