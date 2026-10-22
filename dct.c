@@ -56,10 +56,8 @@ void dct(int inverse,         /* ==0: DCT, !=0 DCT inverse */
     }
 
     if (inverse) {
-        // inverse != 0 => DCT inverse
         produit_matrice_vecteur(dct_inverse, entree, sortie);
     } else {
-        // inverse == 0 => DCT
         produit_matrice_vecteur(dct_table, entree, sortie);
     }
 }
