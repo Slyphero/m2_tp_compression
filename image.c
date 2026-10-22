@@ -88,4 +88,13 @@ struct image *lecture_image(FILE *f) {
  */
 
 void ecriture_image(FILE *f, const struct image *image) {
+    fprintf(f, "P5\n");
+    fprintf(f, "%d %d\n", image->largeur, image->hauteur);
+    fprintf(f, "255\n");
+
+    for (int y = 0; y < image->hauteur; y++) {
+        for (int x = 0; x < image->largeur; x++) {
+            fputc(image->pixels[y][x], f);
+        }
+    }
 }
