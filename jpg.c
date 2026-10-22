@@ -11,14 +11,16 @@
  * DCT de l'image :  DCT * IMAGE * DCT transposée
  * Inverse        :  DCT transposée * I' * DCT
  */
-void dct_image(int inverse, Matrice *image) {}
+void dct_image(int inverse, Matrice *image) {
+}
 
 /*
  * Quantification/Déquantification des coefficients de la DCT
  * Si inverse est vrai, on déquantifie.
  * Attention, on reste en calculs flottant (en sortie aussi).
  */
-void quantification(int nbe, int qualite, Matrice *extrait, int inverse) {}
+void quantification(int nbe, int qualite, Matrice *extrait, int inverse) {
+}
 /*
  * ZIGZAG.
  * On fournit à cette fonction les coordonnées d'un point
@@ -42,7 +44,8 @@ void quantification(int nbe, int qualite, Matrice *extrait, int inverse) {}
  * |   |   |   |   |
  * +---+---+---+---+
  */
-void zigzag(int nbe, int *y, int *x) {}
+void zigzag(int nbe, int *y, int *x) {
+}
 /*
  * Extraction d'une matrice de l'image (le résultat est déjà alloué).
  * La sous-image carrée à la position et de la taille indiquée
