@@ -40,6 +40,19 @@ void dct_image(int inverse, Matrice *image) {
  * Attention, on reste en calculs flottant (en sortie aussi).
  */
 void quantification(int nbe, int qualite, Matrice *extrait, int inverse) {
+    if (inverse) {
+        for (int y = 0; y < nbe; y++) {
+            for (int x = 0; x < nbe; x++) {
+                extrait->t[y][x] = extrait->t[y][x] * (1 + (1 + x + y) * qualite);
+            }
+        }
+    } else {
+        for (int y = 0; y < nbe; y++) {
+            for (int x = 0; x < nbe; x++) {
+                extrait->t[y][x] = extrait->t[y][x] / (1 + (1 + x + y) * qualite);
+            }
+        }
+    }
 }
 /*
  * ZIGZAG.
