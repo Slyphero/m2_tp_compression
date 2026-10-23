@@ -46,7 +46,7 @@ void compresse(struct intstream *entier, struct intstream *entier_signe, int nbe
     int compteur_zeros = 0;
 
     for (int i = 0; i < nbe; i++) {
-        int dct_convertie = (int)roundf(dct[i]);
+        int dct_convertie = roundf(dct[i]);
         if (dct_convertie == 0) {
             compteur_zeros++;
         } else {
@@ -72,10 +72,7 @@ void decompresse(struct intstream *entier, struct intstream *entier_signe, int n
     while (i < nbe) {
         nombre_zeros = get_entier_intstream(entier);
 
-        for (int j = 0; j < nombre_zeros; j++) {
-            if (i >= nbe) {
-                break;
-            }
+        while (nombre_zeros--) {
             dct[i] = 0;
             i++;
         }
@@ -84,7 +81,7 @@ void decompresse(struct intstream *entier, struct intstream *entier_signe, int n
             break;
         }
         valeur = get_entier_intstream(entier_signe);
-        dct[i] = (float) valeur;
+        dct[i] = valeur;
         i++;
     }
 }

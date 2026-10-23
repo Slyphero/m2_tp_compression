@@ -56,29 +56,26 @@ void liberation_image(struct image *image) {
  */
 
 struct image *lecture_image(FILE *f) {
-    char *ligne;
-    ALLOUER(ligne, MAXLIGNE);
+    char ligne[MAXLIGNE];
 
+    // Lecture P5 + largeur hauteur
     for (int i = 1; i <= 2; i++) {
         lire_ligne(f, ligne);
     }
 
     int largeur, hauteur;
-    sscanf(ligne, "%d %d", &largeur, &hauteur);
+    sscanf(ligne, "%d%d", &largeur, &hauteur);
 
     struct image *image = allocation_image(hauteur, largeur);
 
+    // Lecture valeur pixel max
     lire_ligne(f, ligne);
-
-    char *separateurs = " \t\r\n";
 
     for (int y = 0; y < hauteur; y++) {
         for (int x = 0; x < largeur; x++) {
             image->pixels[y][x] = fgetc(f);
         }
     }
-
-    free(ligne);
 
     return image;
 }
