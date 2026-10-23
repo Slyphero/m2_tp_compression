@@ -24,12 +24,10 @@
 void ondelette_1d(const float *entree, float *sortie, int nbe) {
     int impair = nbe % 2 != 0;
     int milieu = nbe / 2;
-    int j = 0;
 
     for (int i = 0; i < nbe - 1; i += 2) {
-        sortie[j] = (entree[i] + entree[i + 1]) / 2.0;
-        sortie[j + milieu + impair] = (entree[i] - entree[i + 1]) / 2.0;
-        j++;
+        sortie[i / 2] = (entree[i] + entree[i + 1]) / 2.0;
+        sortie[i / 2 + milieu + impair] = (entree[i] - entree[i + 1]) / 2.0;
     }
 
     if (impair)
