@@ -25,11 +25,11 @@ void ondelette_1d(const float *entree, float *sortie, int nbe) {
     int impair = nbe % 2 != 0;
     int milieu = nbe / 2;
 
-    sortie[nbe / 2] = entree[nbe - 1];
+    sortie[milieu] = entree[nbe - 1];
 
     for (int i = 0; i < nbe - 1; i += 2) {
         sortie[i / 2] = (entree[i] + entree[i + 1]) / 2.0;
-        sortie[i / 2 + nbe / 2 + impair] = (entree[i] - entree[i + 1]) / 2.0;
+        sortie[i / 2 + milieu + impair] = (entree[i] - entree[i + 1]) / 2.0;
     }
 }
 
