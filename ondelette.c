@@ -21,7 +21,26 @@
  * A B C D E F       (A+B)/2 (C+D)/2 (E+F)/2 (A-B)/2 (C-D)/2 (E-F)/2
  */
 
-void ondelette_1d(const float *entree, float *sortie, int nbe) {}
+void ondelette_1d(const float *entree, float *sortie, int nbe) {
+    if (nbe == 1) {
+        sortie[0] = entree[0];
+        return;
+    }
+
+    int impair = nbe % 2 != 0;
+    int milieu = nbe / 2;
+    int j = 0;
+
+    for (int i = 0; i < nbe - 1; i += 2) {
+        sortie[j] = (entree[i] + entree[i + 1]) / 2.0;
+        sortie[j + milieu + impair] = (entree[i] - entree[i + 1]) / 2.0;
+        j++;
+    }
+
+    if (impair) {
+        sortie[milieu] = entree[nbe - 1];
+    }
+}
 
 /*
  * Comme pour la DCT, on applique dans un sens puis dans l'autre.
@@ -73,7 +92,8 @@ void ondelette_1d(const float *entree, float *sortie, int nbe) {}
  *
  */
 
-void ondelette_2d(Matrice *image) {}
+void ondelette_2d(Matrice *image) {
+}
 
 /*
  * Quantification de l'ondelette.
@@ -83,7 +103,8 @@ void ondelette_2d(Matrice *image) {}
  * Une qualité de 1 indique que l'on a pas de pertes.
  */
 
-void quantif_ondelette(Matrice *image, float qualite) {}
+void quantif_ondelette(Matrice *image, float qualite) {
+}
 
 /*
  * Sortie des coefficients dans le bonne ordre afin
@@ -141,11 +162,14 @@ void codage_ondelette(Matrice *image, FILE *f) {
 *******************************************************************************
 */
 
-void ondelette_1d_inverse(const float *entree, float *sortie, int nbe) {}
+void ondelette_1d_inverse(const float *entree, float *sortie, int nbe) {
+}
 
-void ondelette_2d_inverse(Matrice *image) {}
+void ondelette_2d_inverse(Matrice *image) {
+}
 
-void dequantif_ondelette(Matrice *image, float qualite) {}
+void dequantif_ondelette(Matrice *image, float qualite) {
+}
 
 void decodage_ondelette(Matrice *image, FILE *f) {
     int j, i;
