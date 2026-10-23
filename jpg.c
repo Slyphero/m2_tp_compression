@@ -122,6 +122,7 @@ void zigzag(int nbe, int *y, int *x) {
         deplacer_haut_droite(nbe, y, x);
     }
 }
+
 /*
  * Extraction d'une matrice de l'image (le résultat est déjà alloué).
  * La sous-image carrée à la position et de la taille indiquée

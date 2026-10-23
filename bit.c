@@ -44,7 +44,9 @@ unsigned int nb_bits_utile(unsigned long v) {
  * (Vous perdez des points de TP si vous utilisez une fonction travaillant
  * avec des nombres flottants)
  */
-unsigned long pow2(Position_Bit position) { return (unsigned long)1 << position; }
+unsigned long pow2(Position_Bit position) {
+    return (unsigned long)1 << position;
+}
 
 /*
  * Cette fonction retourne le bit "n" d'un entier.
