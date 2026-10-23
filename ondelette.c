@@ -22,11 +22,6 @@
  */
 
 void ondelette_1d(const float *entree, float *sortie, int nbe) {
-    if (nbe == 1) {
-        sortie[0] = entree[0];
-        return;
-    }
-
     int impair = nbe % 2 != 0;
     int milieu = nbe / 2;
     int j = 0;
@@ -37,9 +32,8 @@ void ondelette_1d(const float *entree, float *sortie, int nbe) {
         j++;
     }
 
-    if (impair) {
+    if (impair)
         sortie[milieu] = entree[nbe - 1];
-    }
 }
 
 /*
