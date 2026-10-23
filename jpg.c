@@ -55,6 +55,29 @@ void quantification(int nbe, int qualite, Matrice *extrait, int inverse) {
     }
 }
 
+/* Fonctions auxiliaires pour zigzag pour plus de lisibilite */
+static void deplacer_bas(int nbe, int *y, int *x) {
+    if (*y < nbe - 1)
+        (*y)++;
+}
+
+static void deplacer_droite(int nbe, int *y, int *x) {
+    if (*x < nbe - 1)
+        (*x)++;
+}
+
+static void deplacer_bas_gauche(int nbe, int *y, int *x) {
+    deplacer_bas(nbe, y, x);
+    if (*x > 0)
+        (*x)--;
+}
+
+static void deplacer_haut_droite(int nbe, int *y, int *x) {
+    deplacer_droite(nbe, y, x);
+    if (*y > 0)
+        (*y)--;
+}
+
 /*
  * ZIGZAG.
  * On fournit à cette fonction les coordonnées d'un point
@@ -79,24 +102,24 @@ void quantification(int nbe, int qualite, Matrice *extrait, int inverse) {
  * +---+---+---+---+
  */
 void zigzag(int nbe, int *y, int *x) {
-    if ((*x + *y) % 2 == 0) {
-        if (*x == nbe - 1)
-            (*y)++;
-        else if (*y == 0)
-            (*x)++;
-        else {
-            (*y)--;
-            (*x)++;
-        }
-    } else {
-        if (*y == nbe - 1)
-            (*x)++;
-        else if (*x == 0)
-            (*y)++;
-        else {
-            (*x)--;
-            (*y)++;
-        }
+    int difference_paire = (abs(*x - *y) % 2 == 0);
+
+    int premiere_ligne = (*y == 0);
+    int premiere_colonne = (*x == 0);
+
+    int derniere_colonne = (*x == nbe - 1);
+    int derniere_ligne = (*y == nbe - 1);
+
+    if (!derniere_colonne &&
+        ((premiere_ligne && difference_paire) || (derniere_ligne && !difference_paire))) {
+        deplacer_droite(nbe, y, x);
+    } else if (!difference_paire && !premiere_colonne && !derniere_ligne) {
+        deplacer_bas_gauche(nbe, y, x);
+    } else if (!derniere_ligne && ((premiere_colonne && !difference_paire) ||
+                                   (derniere_colonne && difference_paire))) {
+        deplacer_bas(nbe, y, x);
+    } else if (difference_paire && !premiere_ligne && !derniere_colonne) {
+        deplacer_haut_droite(nbe, y, x);
     }
 }
 /*
