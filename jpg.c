@@ -12,6 +12,26 @@
  * Inverse        :  DCT transposée * I' * DCT
  */
 void dct_image(int inverse, Matrice *image) {
+    static Matrice *dct_table = NULL;
+    static Matrice *dct_inverse;
+    Matrice *image_intermediaire = allocation_matrice_float(image->width, image->height);
+
+    if (dct_table == NULL || dct_table->width != image->width) {
+        dct_table = allocation_matrice_float(image->height, image->width);
+        coef_dct(dct_table);
+        dct_inverse = allocation_matrice_float(image->width, image->height);
+        transposition_matrice(dct_table, dct_inverse);
+    }
+
+    if (inverse) {
+        produit_matrices_float(dct_inverse, image, image_intermediaire);
+        produit_matrices_float(image_intermediaire, dct_table, image);
+    } else {
+        produit_matrices_float(dct_table, image, image_intermediaire);
+        produit_matrices_float(image_intermediaire, dct_inverse, image);
+    }
+
+    liberation_matrice_float(image_intermediaire);
 }
 
 /*
