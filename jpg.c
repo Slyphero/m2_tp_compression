@@ -43,13 +43,13 @@ void quantification(int nbe, int qualite, Matrice *extrait, int inverse) {
     if (inverse) {
         for (int y = 0; y < nbe; y++) {
             for (int x = 0; x < nbe; x++) {
-                extrait->t[y][x] = extrait->t[y][x] * (1 + (1 + x + y) * qualite);
+                extrait->t[y][x] *= (1 + (1 + x + y) * qualite);
             }
         }
     } else {
         for (int y = 0; y < nbe; y++) {
             for (int x = 0; x < nbe; x++) {
-                extrait->t[y][x] = extrait->t[y][x] / (1 + (1 + x + y) * qualite);
+                extrait->t[y][x] /= (1 + (1 + x + y) * qualite);
             }
         }
     }
@@ -102,7 +102,7 @@ static void deplacer_haut_droite(int nbe, int *y, int *x) {
  * +---+---+---+---+
  */
 void zigzag(int nbe, int *y, int *x) {
-    int difference_paire = (abs(*x - *y) % 2 == 0);
+    int somme_paire = (*x + *y) % 2 == 0;
 
     int premiere_ligne = (*y == 0);
     int premiere_colonne = (*x == 0);
@@ -111,14 +111,14 @@ void zigzag(int nbe, int *y, int *x) {
     int derniere_ligne = (*y == nbe - 1);
 
     if (!derniere_colonne &&
-        ((premiere_ligne && difference_paire) || (derniere_ligne && !difference_paire))) {
+        ((premiere_ligne && somme_paire) || (derniere_ligne && !somme_paire))) {
         deplacer_droite(nbe, y, x);
-    } else if (!difference_paire && !premiere_colonne && !derniere_ligne) {
+    } else if (!somme_paire && !premiere_colonne && !derniere_ligne) {
         deplacer_bas_gauche(nbe, y, x);
-    } else if (!derniere_ligne && ((premiere_colonne && !difference_paire) ||
-                                   (derniere_colonne && difference_paire))) {
+    } else if (!derniere_ligne && ((premiere_colonne && !somme_paire) ||
+                                   (derniere_colonne && somme_paire))) {
         deplacer_bas(nbe, y, x);
-    } else if (difference_paire && !premiere_ligne && !derniere_colonne) {
+    } else if (somme_paire && !premiere_ligne && !derniere_colonne) {
         deplacer_haut_droite(nbe, y, x);
     }
 }
