@@ -249,15 +249,15 @@ void ondelette_2d_inverse(Matrice *image) {
         hauteurs[etapes] = hauteur;
         largeur = (largeur + 1) / 2;
         hauteur = (hauteur + 1) / 2;
-        etapes++; 
+        etapes++;
     }
 
     for (int e = etapes - 1; e >= 0; e--) {
         transposition_matrice(image, transposee1);
-        
+
         for (int i = 0; i < largeurs[e]; i++) {
             ondelette_1d_inverse(transposee1->t[i], sortie, hauteurs[e]);
-            
+
             for (int j = 0; j < hauteurs[e]; j++) {
                 transposee1->t[i][j] = sortie[j];
             }
@@ -287,7 +287,27 @@ void ondelette_2d_inverse(Matrice *image) {
 }
 
 void dequantif_ondelette(Matrice *image, float qualite) {
+    int largeur = image->width;
+    int hauteur = image->height;
 
+    int milieu_largeur, milieu_hauteur;
+
+    while (largeur > 1 || hauteur > 1) {
+        milieu_largeur = (largeur + 1) / 2;
+        milieu_hauteur = (hauteur + 1) / 2;
+
+        for (int y = 0; y < hauteur; y++) {
+            for (int x = 0; x < largeur; x++) {
+                if (x >= milieu_largeur || y >= milieu_hauteur) {
+                    image->t[y][x] *= qualite;
+                }
+            }
+        }
+
+        largeur = milieu_largeur;
+        hauteur = milieu_hauteur;
+        qualite = MAX(1.0f, qualite / 8);
+    }
 }
 
 void decodage_ondelette(Matrice *image, FILE *f) {
