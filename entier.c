@@ -36,18 +36,23 @@
  *
  */
 
-static char *prefixes[] = {"00",    "010",   "011",    "1000",  "1001",  "1010",
-                           "1011",  "11000", "11001",  "11010", "11011", "11100",
-                           "11101", "11110", "111110", "111111"};
+static char *prefixes[] = {"00",    
+                           "010",   "011",    
+                           "1000",  "1001",  "1010", "1011",  
+                           "11000", "11001", "11010", "11011", "11100", "11101", "11110", 
+                           "111110", "111111"};
 
-void put_entier(struct bitstream *b, unsigned int f) {
+void put_entier(struct bitstream *b, unsigned int f)
+{
     int nb_bits = nb_bits_utile(f);
-    if (nb_bits >= TAILLE(prefixes)) {
+    if (nb_bits >= TAILLE(prefixes))
+    {
         EXIT;
     }
 
     put_bit_string(b, prefixes[nb_bits]);
-    if (nb_bits > 0) {
+    if (nb_bits > 0)
+    {
         put_bits(b, nb_bits - 1, f);
     }
 }
@@ -60,27 +65,38 @@ void put_entier(struct bitstream *b, unsigned int f) {
  * Ou bien parcourir l'arbre des états 8 bits par 8 bits (voir le cours)
  * Mais je ne vous le demande pas
  */
-unsigned int get_entier(struct bitstream *b) {
+unsigned int get_entier(struct bitstream *b)
+{
     int nb_bits = 0;
     int i = 0;
     char bit_buffer = get_bit(b) ? '1' : '0';
 
-    while (1) {
-        if (bit_buffer != prefixes[nb_bits][i]) {
+    while (1)
+    {
+        if (bit_buffer != prefixes[nb_bits][i])
+        {
             nb_bits++;
-        } else {
+        }
+        else
+        {
             i++;
-            if (prefixes[nb_bits][i] == '\0') {
+            if (prefixes[nb_bits][i] == '\0')
+            {
                 break;
-            } else {
+            }
+            else
+            {
                 bit_buffer = get_bit(b) ? '1' : '0';
             }
         }
     }
 
-    if (nb_bits <= 1) {
+    if (nb_bits <= 1)
+    {
         return nb_bits;
-    } else {
+    }
+    else
+    {
         return pow2(nb_bits - 1) | get_bits(b, nb_bits - 1);
     }
 }
@@ -99,13 +115,17 @@ unsigned int get_entier(struct bitstream *b) {
  *   -3 --> 1 2
  *
  */
-void put_entier_signe(struct bitstream *b, int i) {
+void put_entier_signe(struct bitstream *b, int i)
+{
     Booleen est_negatif = (i < 0);
     put_bit(b, est_negatif);
 
-    if (est_negatif) {
+    if (est_negatif)
+    {
         put_entier(b, -i - 1);
-    } else {
+    }
+    else
+    {
         put_entier(b, i);
     }
 }
@@ -113,12 +133,16 @@ void put_entier_signe(struct bitstream *b, int i) {
 /*
  *
  */
-int get_entier_signe(struct bitstream *b) {
+int get_entier_signe(struct bitstream *b)
+{
     Booleen est_negatif = get_bit(b);
 
-    if (est_negatif) {
+    if (est_negatif)
+    {
         return -(get_entier(b) + 1);
-    } else {
+    }
+    else
+    {
         return get_entier(b);
     }
 }

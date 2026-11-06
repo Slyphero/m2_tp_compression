@@ -6,7 +6,8 @@
  * Allocation d'une matrice carrée de float.
  * (tableau de pointeur sur tableau de flottants)
  */
-Matrice *allocation_matrice_float(int height, int width) {
+Matrice *allocation_matrice_float(int height, int width)
+{
     Matrice *m;
     ALLOUER(m, 1);
 
@@ -15,7 +16,8 @@ Matrice *allocation_matrice_float(int height, int width) {
 
     ALLOUER(m->t, height);
 
-    for (int i = 0; i < height; i++) {
+    for (int i = 0; i < height; i++)
+    {
         ALLOUER(m->t[i], width);
     }
 
@@ -25,8 +27,10 @@ Matrice *allocation_matrice_float(int height, int width) {
 /*
  * Libération
  */
-void liberation_matrice_float(Matrice *m) {
-    for (int i = 0; i < m->height; i++) {
+void liberation_matrice_float(Matrice *m)
+{
+    for (int i = 0; i < m->height; i++)
+    {
         free(m->t[i]);
     }
 
@@ -38,7 +42,8 @@ void liberation_matrice_float(Matrice *m) {
  * Produit matriciel de matrices carrées (le résultat est déjà alloué).
  *             resultat = a * b
  */
-void produit_matrices_float(const Matrice *a, const Matrice *b, Matrice *resultat) {
+void produit_matrices_float(const Matrice *a, const Matrice *b, Matrice *resultat)
+{
     int j, i, k;
     float s;
 
@@ -48,7 +53,8 @@ void produit_matrices_float(const Matrice *a, const Matrice *b, Matrice *resulta
     assert(a->width == resultat->width);
     assert(a->height == resultat->height);
     for (j = 0; j < a->height; j++)
-        for (i = 0; i < a->width; i++) {
+        for (i = 0; i < a->width; i++)
+        {
             s = 0;
             for (k = 0; k < a->width; k++)
                 s += a->t[j][k] * b->t[k][i];
@@ -62,11 +68,13 @@ void produit_matrices_float(const Matrice *a, const Matrice *b, Matrice *resulta
  * Le résultat est supposé annulé
  */
 
-void produit_matrice_vecteur(const Matrice *a, const float *v, float *resultat) {
+void produit_matrice_vecteur(const Matrice *a, const float *v, float *resultat)
+{
     int j, i;
     float s;
 
-    for (j = 0; j < a->height; j++) {
+    for (j = 0; j < a->height; j++)
+    {
         s = 0;
         for (i = 0; i < a->width; i++)
             s += a->t[j][i] * v[i];
@@ -79,7 +87,8 @@ void produit_matrice_vecteur(const Matrice *a, const float *v, float *resultat) 
  *        a_t est la transposée de a
  */
 
-void transposition_matrice_partielle(const Matrice *a, Matrice *resultat, int height, int width) {
+void transposition_matrice_partielle(const Matrice *a, Matrice *resultat, int height, int width)
+{
     int i, j;
 
     assert(a->width == resultat->height);
@@ -89,7 +98,8 @@ void transposition_matrice_partielle(const Matrice *a, Matrice *resultat, int he
             resultat->t[i][j] = a->t[j][i];
 }
 
-void transposition_matrice(const Matrice *a, Matrice *resultat) {
+void transposition_matrice(const Matrice *a, Matrice *resultat)
+{
     transposition_matrice_partielle(a, resultat, a->height, a->width);
 }
 
@@ -97,10 +107,12 @@ void transposition_matrice(const Matrice *a, Matrice *resultat) {
  * Affiche
  */
 
-void affiche_matrice(const Matrice *a, FILE *f) {
+void affiche_matrice(const Matrice *a, FILE *f)
+{
     int i, j;
 
-    for (j = 0; j < a->height; j++) {
+    for (j = 0; j < a->height; j++)
+    {
         for (i = 0; i < a->width; i++)
             fprintf(f, " %8.4g", a->t[j][i]);
         fprintf(f, "\n");
@@ -111,14 +123,16 @@ void affiche_matrice(const Matrice *a, FILE *f) {
  * Cela vous permettra d'écrire plus facilement
  * la matrice de flottant dans un fichier image
  */
-struct image *creation_image_a_partir_de_matrice_float(const Matrice *m) {
+struct image *creation_image_a_partir_de_matrice_float(const Matrice *m)
+{
     int j, i;
     struct image *image;
 
     image = allocation_image(m->height, m->width);
 
     for (j = 0; j < image->hauteur; j++)
-        for (i = 0; i < image->largeur; i++) {
+        for (i = 0; i < image->largeur; i++)
+        {
             if (m->t[j][i] > 255)
                 image->pixels[j][i] = 255;
             else if (m->t[j][i] < 0)
@@ -136,7 +150,8 @@ struct image *creation_image_a_partir_de_matrice_float(const Matrice *m) {
  * le résultat semblera très bruité car les valeurs négatives
  * vont être transformées en blancs.
  */
-void affiche_matrice_image(const Matrice *m) {
+void affiche_matrice_image(const Matrice *m)
+{
     FILE *f;
     struct image *image;
     image = creation_image_a_partir_de_matrice_float(m);

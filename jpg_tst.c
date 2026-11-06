@@ -2,7 +2,8 @@
 #include "matrice.h"
 #include "jpg.h"
 
-void dct_image_tst() {
+void dct_image_tst()
+{
     int i, j;
 
     static float im1[3] = {1, 2, 3};
@@ -27,19 +28,22 @@ void dct_image_tst() {
 
     for (j = 0; j < 3; j++)
         for (i = 0; i < 3; i++)
-            if (fabs(im.t[j][i] - ir.t[j][i]) > 1e-4) {
+            if (fabs(im.t[j][i] - ir.t[j][i]) > 1e-4)
+            {
                 eprintf("[%d][%d] = %g au lieu de %g\n", j, i, im.t[j][i], ir.t[j][i]);
             }
 
     dct_image(1, &ir);
     for (j = 0; j < 3; j++)
         for (i = 0; i < 3; i++)
-            if (fabs(jm.t[j][i] - ir.t[j][i]) > 1e-4) {
+            if (fabs(jm.t[j][i] - ir.t[j][i]) > 1e-4)
+            {
                 eprintf("*[%d][%d] = %g au lieu de %g\n", j, i, ir.t[j][i], jm.t[j][i]);
             }
 }
 
-void quantification_tst() {
+void quantification_tst()
+{
     int i, j;
 
     static float im1[3] = {1, 2, 3};
@@ -58,7 +62,8 @@ void quantification_tst() {
 
     for (j = 0; j < 3; j++)
         for (i = 0; i < 3; i++)
-            if (fabs(im.t[j][i] - ir.t[j][i]) > 1e-4) {
+            if (fabs(im.t[j][i] - ir.t[j][i]) > 1e-4)
+            {
                 eprintf("[%d][%d] = %g au lieu de %g\n", j, i, im.t[j][i], ir.t[j][i]);
             }
 
@@ -67,18 +72,20 @@ void quantification_tst() {
 
     for (j = 0; j < 3; j++)
         for (i = 0; i < 3; i++)
-            if (fabs(im.t[j][i] - ir.t[j][i]) > 1e-4) {
+            if (fabs(im.t[j][i] - ir.t[j][i]) > 1e-4)
+            {
                 eprintf("[%d][%d] = %g au lieu de %g\n", j, i, im.t[j][i], ir.t[j][i]);
             }
 }
 
-void zigzag_tst() {
+void zigzag_tst()
+{
 #define ZZ(N, Y, X)                                                                                \
     old_i = i;                                                                                     \
     old_j = j;                                                                                     \
     zigzag(N, &j, &i);                                                                             \
     if (i != X || j != Y)                                                                          \
-        eprintf("Mauvais zigzag dans carré de coté %d.\nAprès X=%d Y=%d j'attend X=%d Y=%d et " \
+        eprintf("Mauvais zigzag dans carré de coté %d.\nAprès X=%d Y=%d j'attend X=%d Y=%d et "    \
                 "vous donnez X=%d Y=%d\n",                                                         \
                 N, old_i, old_j, X, Y, i, j);
 

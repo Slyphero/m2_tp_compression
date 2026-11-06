@@ -3,11 +3,13 @@
 
 static int premiere = 1;
 
-int eprintf(const char *format, ...) {
+int eprintf(const char *format, ...)
+{
     va_list ap;
     int i;
 
-    if (premiere) {
+    if (premiere)
+    {
         premiere = 0;
         fprintf(stderr, "\n\n************** ERREUR ! ***************\n\n");
     }
@@ -18,4 +20,7 @@ int eprintf(const char *format, ...) {
     return (i);
 }
 
-int eprintf_utilisee() { return (premiere == 0); }
+int eprintf_utilisee()
+{
+    return (premiere == 0);
+}

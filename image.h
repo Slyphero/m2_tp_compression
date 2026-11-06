@@ -7,7 +7,8 @@
 
 #include "bases.h"
 
-struct image {
+struct image
+{
     int largeur;
     int hauteur;
     unsigned char **pixels;

@@ -16,7 +16,8 @@
  * Sortie du programme
  */
 #define EXIT                                                                                       \
-    do {                                                                                           \
+    do                                                                                             \
+    {                                                                                              \
         ICI;                                                                                       \
         abort();                                                                                   \
     } while (0)
@@ -28,7 +29,8 @@
  */
 #define ALLOUER(X, NB)                                                                             \
     do                                                                                             \
-        if ((X = malloc(sizeof(*(X)) * (NB))) == 0) {                                              \
+        if ((X = malloc(sizeof(*(X)) * (NB))) == 0)                                                \
+        {                                                                                          \
             fprintf(stderr, "Plus de memoire\n");                                                  \
             EXIT;                                                                                  \
         }                                                                                          \

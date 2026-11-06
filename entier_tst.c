@@ -1,7 +1,8 @@
 #include "bases.h"
 #include "entier.h"
 
-static struct {
+static struct
+{
     int entier;
     char *chaine;
 } t[] = {
@@ -33,7 +34,8 @@ static struct {
     {32767, "11111111111111111111"},
 };
 
-void put_entier_tst() {
+void put_entier_tst()
+{
     int i, j;
     struct bitstream *bs;
 
@@ -43,9 +45,11 @@ void put_entier_tst() {
     close_bitstream(bs);
 
     bs = open_bitstream("xxx", "r");
-    for (i = 0; i < TAILLE(t); i++) {
+    for (i = 0; i < TAILLE(t); i++)
+    {
         for (j = 0; t[i].chaine[j]; j++)
-            if (get_bit(bs) != t[i].chaine[j] - '0') {
+            if (get_bit(bs) != t[i].chaine[j] - '0')
+            {
                 eprintf("Ecriture de l'entier %d (%s en binaire)\n", t[i].entier, t[i].chaine);
                 eprintf("Mauvaise écriture du bit numero %d (a partir de 0)\n", j);
                 return;
@@ -54,16 +58,19 @@ void put_entier_tst() {
     close_bitstream(bs);
 }
 
-void get_entier_tst() {
+void get_entier_tst()
+{
     int i, j;
     struct bitstream *bs;
 
     put_entier_tst();
 
     bs = open_bitstream("xxx", "r");
-    for (i = 0; i < TAILLE(t); i++) {
+    for (i = 0; i < TAILLE(t); i++)
+    {
         j = get_entier(bs);
-        if (j != t[i].entier) {
+        if (j != t[i].entier)
+        {
             eprintf("Lecture de l'entier %d (%s en binaire)\n", t[i].entier, t[i].chaine);
             eprintf("Je recois %d\n", j);
             return;
@@ -72,12 +79,14 @@ void get_entier_tst() {
     close_bitstream(bs);
 }
 
-void put_entier_signe_tst() {
+void put_entier_signe_tst()
+{
     int i;
     struct bitstream *bs;
 
     bs = open_bitstream("xxx", "w");
-    for (i = 0; i < TAILLE(t); i++) {
+    for (i = 0; i < TAILLE(t); i++)
+    {
         put_entier_signe(bs, t[i].entier);
         put_entier_signe(bs, -t[i].entier);
     }
@@ -85,59 +94,75 @@ void put_entier_signe_tst() {
     close_bitstream(bs);
 
     bs = open_bitstream("xxx", "r");
-    for (i = 0; i < TAILLE(t); i++) {
-        if (get_bit(bs)) {
+    for (i = 0; i < TAILLE(t); i++)
+    {
+        if (get_bit(bs))
+        {
             eprintf("Mauvais bit de signe en écriture (positif) pour %d\n", i);
             return;
         }
-        if (get_entier(bs) != t[i].entier) {
+        if (get_entier(bs) != t[i].entier)
+        {
             eprintf("Mauvaise écriture de l'entier %d\n", i);
             return;
         }
-        if (i != 0) {
-            if (!get_bit(bs)) {
+        if (i != 0)
+        {
+            if (!get_bit(bs))
+            {
                 eprintf("Mauvais bit de signe en écriture (negatif) %d\n", i);
                 return;
             }
-            if (get_entier(bs) != t[i].entier - 1) {
+            if (get_entier(bs) != t[i].entier - 1)
+            {
                 eprintf("Mauvaise écriture de l'entier %d\n", -i);
                 return;
             }
-        } else {
-            if (get_bit(bs)) {
+        }
+        else
+        {
+            if (get_bit(bs))
+            {
                 eprintf("Mauvais bit de signe pour 0\n");
                 return;
             }
-            if (get_entier(bs) != 0) {
+            if (get_entier(bs) != 0)
+            {
                 eprintf("Mauvaise valeur pour 0\n");
                 return;
             }
         }
     }
-    if (get_bit(bs) == 0) {
+    if (get_bit(bs) == 0)
+    {
         eprintf("Mauvais bit de signe pour -32768\n");
         return;
     }
-    if (get_entier(bs) != 32767) {
+    if (get_entier(bs) != 32767)
+    {
         eprintf("Mauvaise valeur pour -32768\n");
         return;
     }
     close_bitstream(bs);
 }
 
-void get_entier_signe_tst() {
+void get_entier_signe_tst()
+{
     int i;
     struct bitstream *bs;
 
     put_entier_signe_tst();
 
     bs = open_bitstream("xxx", "r");
-    for (i = 0; i < TAILLE(t); i++) {
-        if (get_entier_signe(bs) != t[i].entier) {
+    for (i = 0; i < TAILLE(t); i++)
+    {
+        if (get_entier_signe(bs) != t[i].entier)
+        {
             eprintf("Mauvaise lecture de l'entier signe %d\n", i);
             return;
         }
-        if (get_entier_signe(bs) != -t[i].entier) {
+        if (get_entier_signe(bs) != -t[i].entier)
+        {
             eprintf("Mauvaise lecture de l'entier signe %d\n", -i);
             return;
         }

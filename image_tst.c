@@ -1,6 +1,7 @@
 #include "image.h"
 
-void lire_ligne_tst() {
+void lire_ligne_tst()
+{
     char ligne[MAXLIGNE];
     FILE *f;
 
@@ -15,24 +16,28 @@ void lire_ligne_tst() {
 
     f = fopen("xxx", "r");
     lire_ligne(f, ligne);
-    if (strcmp(ligne, "a b c\n")) {
+    if (strcmp(ligne, "a b c\n"))
+    {
         eprintf("Pas bon\n");
         return;
     }
     lire_ligne(f, ligne);
-    if (strcmp(ligne, "d e f\n")) {
+    if (strcmp(ligne, "d e f\n"))
+    {
         eprintf("Pas bon\n");
         return;
     }
     lire_ligne(f, ligne);
-    if (strcmp(ligne, "g h i\n")) {
+    if (strcmp(ligne, "g h i\n"))
+    {
         eprintf("Pas bon\n");
         return;
     }
     lire_ligne(f, ligne);
 }
 
-void allocation_image_tst() {
+void allocation_image_tst()
+{
     struct image *image;
     int i;
 
@@ -45,30 +50,35 @@ void allocation_image_tst() {
         image->pixels[i][0] = 99;
 }
 
-void liberation_image_tst() {
+void liberation_image_tst()
+{
     struct image *image, *image2;
 
     image = allocation_image(100, 100);
     image2 = image;
     liberation_image(image);
     image = allocation_image(100, 100);
-    if (image != image2) {
+    if (image != image2)
+    {
         eprintf("Vous oubliez de libérer quelque chose\n");
         return;
     }
 }
 
-void lecture_image_tst() {
+void lecture_image_tst()
+{
     struct image *image;
     int j, i;
     int s;
 
     image = lecture_image(fopen("DONNEES/bat710.pgm", "r"));
-    if (image->hauteur != 135) {
+    if (image->hauteur != 135)
+    {
         eprintf("Mauvaise hauteur : %d au lieu de 135\n", image->hauteur);
         return;
     }
-    if (image->largeur != 254) {
+    if (image->largeur != 254)
+    {
         eprintf("Mauvaise largeur : %d au lieu de 254\n", image->largeur);
         return;
     }
@@ -81,7 +91,8 @@ void lecture_image_tst() {
         eprintf("Mauvais pixels : Checksum = %d\n", s);
 }
 
-void ecriture_image_tst() {
+void ecriture_image_tst()
+{
     struct image *image;
     FILE *f, *g;
     int i;
@@ -98,21 +109,25 @@ void ecriture_image_tst() {
     f = fopen("DONNEES/bat710.pgm", "r");
     g = fopen("xxx", "r");
 
-    do {
+    do
+    {
         assert(fgets(tmpf, sizeof(tmpf), f) == tmpf);
         assert(fgets(tmpg, sizeof(tmpg), g) == tmpg);
-        if (strcmp(tmpf, tmpg) != 0) {
+        if (strcmp(tmpf, tmpg) != 0)
+        {
             eprintf("entete différent dans le fichier ecrit\n");
             return;
         }
     } while (strcmp(tmpg, "255\n") != 0);
 
-    for (i = 0;; i++) {
+    for (i = 0;; i++)
+    {
         ff = fgetc(f);
         gg = fgetc(g);
         if (feof(f) && feof(g))
             return;
-        if (feof(f) || feof(g)) {
+        if (feof(f) || feof(g))
+        {
             eprintf("L'écriture de l'image : probleme de longueur de fichier\n");
             return;
         }
@@ -120,7 +135,8 @@ void ecriture_image_tst() {
             ff = '\0';
         if (i == 51 * image->largeur + 51)
             ff = '\n';
-        if (ff != gg) {
+        if (ff != gg)
+        {
             eprintf("L'écriture de l'image ne redonne pas le fichier de départ\n");
             eprintf("i=%d ff=%d gg=%d\n", i, ff, gg);
             return;

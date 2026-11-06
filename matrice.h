@@ -7,7 +7,8 @@
 
 #include "bases.h"
 
-typedef struct {
+typedef struct
+{
     int width, height;
     float **t;
 } Matrice;

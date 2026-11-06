@@ -14,7 +14,8 @@
 
 #define LARG 8 /* 8 blocs à afficher */
 
-struct parametres {
+struct parametres
+{
     char *nom;
     void (*fct)(struct parametres *p);
 
@@ -26,13 +27,15 @@ struct parametres {
     int saute_entete;
 };
 
-void fread_safe(void *ptr, size_t size, size_t nr, FILE *f) {
+void fread_safe(void *ptr, size_t size, size_t nr, FILE *f)
+{
     assert(fread(ptr, size, nr, f) == nr);
 }
 
 #define fwrite(A, B, C, D) assert(fwrite(A, B, C, D) == (C))
 
-void affiche_son(struct parametres *p) {
+void affiche_son(struct parametres *p)
+{
     unsigned char *buf;
     float *pf;
     unsigned int h;
@@ -49,7 +52,8 @@ void affiche_son(struct parametres *p) {
     if (0)
         fprintf(stderr, "%d\n", p->nbe * taille * LARG * p->position);
     for (i = p->position; i > 0; i--)
-        if ((h = fread((char *)buf, 1, p->nbe * taille * LARG, stdin)) != p->nbe * taille * LARG) {
+        if ((h = fread((char *)buf, 1, p->nbe * taille * LARG, stdin)) != p->nbe * taille * LARG)
+        {
             fprintf(stderr, "Bug affiche_son : %d\n", h);
             abort();
         }
@@ -75,17 +79,20 @@ void affiche_son(struct parametres *p) {
     free(buf);
 }
 
-void filtre_prediction(struct parametres *p) {
+void filtre_prediction(struct parametres *p)
+{
     int c, c1, c2, c3;
 
     c1 = 0;
     c2 = 0;
     c3 = 0;
-    for (;;) {
+    for (;;)
+    {
         c = getchar();
         if (c == -1)
             break;
-        switch (p->shannon) {
+        switch (p->shannon)
+        {
         case 0:
             /* c' = c - c1 */
             putchar(128 + c - c1);
@@ -107,7 +114,8 @@ void filtre_prediction(struct parametres *p) {
     }
 }
 
-void filtre_dct(struct parametres *p) {
+void filtre_dct(struct parametres *p)
+{
     unsigned char *buf;
     float *entree, *sortie;
     int i;
@@ -115,7 +123,8 @@ void filtre_dct(struct parametres *p) {
     ALLOUER(buf, p->nbe);
     ALLOUER(entree, p->nbe);
     ALLOUER(sortie, p->nbe);
-    while (fread((char *)buf, 1, p->nbe, stdin) == p->nbe) {
+    while (fread((char *)buf, 1, p->nbe, stdin) == p->nbe)
+    {
         for (i = 0; i < p->nbe; i++)
             entree[i] = buf[i] - 128.;
         dct(0, p->nbe, entree, sortie);
@@ -126,16 +135,19 @@ void filtre_dct(struct parametres *p) {
     free(sortie);
 }
 
-void saute_entete(struct parametres *p) {
+void saute_entete(struct parametres *p)
+{
     int buf[2];
 
-    if (p->saute_entete) {
+    if (p->saute_entete)
+    {
         fread_safe((char *)buf, 1, sizeof(buf), stdin);
         fwrite((char *)buf, 1, sizeof(buf), stdout);
     }
 }
 
-void filtre_rle(struct parametres *p) {
+void filtre_rle(struct parametres *p)
+{
     float *entree;
     struct intstream *entier, *entier_signe;
     struct bitstream *bs;
@@ -146,18 +158,22 @@ void filtre_rle(struct parametres *p) {
 
     saute_entete(p);
     bs = open_bitstream("-", "w");
-    if (p->shannon) {
+    if (p->shannon)
+    {
         sf = open_shannon_fano();
         entier = open_intstream(bs, Shannon_fano, sf);
         entier_signe = open_intstream(bs, Shannon_fano, sf);
-    } else {
+    }
+    else
+    {
         entier = open_intstream(bs, Entier, NULL);
         entier_signe = open_intstream(bs, Entier_Signe, NULL);
     }
 
     ALLOUER(entree, p->nbe);
 
-    while (fread((char *)entree, 1, p->nbe * sizeof(*entree), stdin) == p->nbe * sizeof(*entree)) {
+    while (fread((char *)entree, 1, p->nbe * sizeof(*entree), stdin) == p->nbe * sizeof(*entree))
+    {
         compresse(entier, entier_signe, p->nbe, entree);
     }
     free(entree);
@@ -166,7 +182,8 @@ void filtre_rle(struct parametres *p) {
     close_bitstream(bs);
 }
 
-void filtre_rleinv(struct parametres *p) {
+void filtre_rleinv(struct parametres *p)
+{
     float *entree;
     struct intstream *entier, *entier_signe;
     struct bitstream *bs;
@@ -177,11 +194,14 @@ void filtre_rleinv(struct parametres *p) {
 
     saute_entete(p);
     bs = open_bitstream("-", "r");
-    if (p->shannon) {
+    if (p->shannon)
+    {
         sf = open_shannon_fano();
         entier = open_intstream(bs, Shannon_fano, sf);
         entier_signe = open_intstream(bs, Shannon_fano, sf);
-    } else {
+    }
+    else
+    {
         entier = open_intstream(bs, Entier, NULL);
         entier_signe = open_intstream(bs, Entier_Signe, NULL);
     }
@@ -189,7 +209,8 @@ void filtre_rleinv(struct parametres *p) {
     ALLOUER(entree, p->nbe);
     EXCEPTION(
         {
-            for (;;) {
+            for (;;)
+            {
                 decompresse(entier, entier_signe, p->nbe, entree);
                 fwrite(entree, p->nbe, sizeof(*entree), stdout);
             }
@@ -204,18 +225,21 @@ void filtre_rleinv(struct parametres *p) {
     close_bitstream(bs);
 }
 
-void filtre_psycho(struct parametres *p) {
+void filtre_psycho(struct parametres *p)
+{
     float *buf;
 
     ALLOUER(buf, p->nbe);
-    while (fread((char *)buf, 1, p->nbe * sizeof(*buf), stdin) == p->nbe * sizeof(*buf)) {
+    while (fread((char *)buf, 1, p->nbe * sizeof(*buf), stdin) == p->nbe * sizeof(*buf))
+    {
         psycho(p->nbe, buf, p->qualite);
         assert(write(1, (char *)buf, p->nbe * sizeof(*buf)) == p->nbe * sizeof(*buf));
     }
     free(buf);
 }
 
-void filtre_imagedct(struct parametres *p) {
+void filtre_imagedct(struct parametres *p)
+{
     struct image *image;
 
     image = lecture_image(stdin);
@@ -224,7 +248,8 @@ void filtre_imagedct(struct parametres *p) {
     compresse_image(p->nbe, image, stdout);
 }
 
-void filtre_shannon_fano_8(struct parametres *p) {
+void filtre_shannon_fano_8(struct parametres *p)
+{
     struct shannon_fano *sf;
     struct bitstream *bs;
     int c;
@@ -232,7 +257,8 @@ void filtre_shannon_fano_8(struct parametres *p) {
     sf = open_shannon_fano();
     bs = open_bitstream("-", "w");
 
-    for (;;) {
+    for (;;)
+    {
         c = getchar();
         if (c == -1)
             break;
@@ -242,7 +268,8 @@ void filtre_shannon_fano_8(struct parametres *p) {
     close_shannon_fano(sf);
 }
 
-void filtre_shannon_fano_16(struct parametres *p) {
+void filtre_shannon_fano_16(struct parametres *p)
+{
     struct shannon_fano *sf;
     struct bitstream *bs;
     int c, d;
@@ -250,7 +277,8 @@ void filtre_shannon_fano_16(struct parametres *p) {
     sf = open_shannon_fano();
     bs = open_bitstream("-", "w");
 
-    for (;;) {
+    for (;;)
+    {
         c = getchar();
         if (c == -1)
             break;
@@ -263,7 +291,8 @@ void filtre_shannon_fano_16(struct parametres *p) {
     close_shannon_fano(sf);
 }
 
-void filtre_imagedctinv(struct parametres *p) {
+void filtre_imagedctinv(struct parametres *p)
+{
     struct image *image;
     int hauteur, largeur;
 
@@ -274,7 +303,8 @@ void filtre_imagedctinv(struct parametres *p) {
     ecriture_image(stdout, image);
 }
 
-void filtre_dctinv(struct parametres *p) {
+void filtre_dctinv(struct parametres *p)
+{
     unsigned char *buf;
     float *entree, *sortie;
     int i;
@@ -282,7 +312,8 @@ void filtre_dctinv(struct parametres *p) {
     ALLOUER(buf, p->nbe);
     ALLOUER(entree, p->nbe);
     ALLOUER(sortie, p->nbe);
-    while (fread((char *)entree, 1, p->nbe * sizeof(*entree), stdin) == p->nbe * sizeof(*entree)) {
+    while (fread((char *)entree, 1, p->nbe * sizeof(*entree), stdin) == p->nbe * sizeof(*entree))
+    {
         dct(1, p->nbe, entree, sortie);
         for (i = 0; i < p->nbe; i++)
             buf[i] = sortie[i] + 128.;
@@ -293,7 +324,8 @@ void filtre_dctinv(struct parametres *p) {
     free(sortie);
 }
 
-void filtre_quantif(struct parametres *p) {
+void filtre_quantif(struct parametres *p)
+{
     Matrice *bloc;
     int largeur, hauteur, nb_blocs;
     int i;
@@ -306,7 +338,8 @@ void filtre_quantif(struct parametres *p) {
 
     nb_blocs = ((hauteur + p->nbe - 1) / p->nbe) * ((largeur + p->nbe - 1) / p->nbe);
 
-    while (nb_blocs--) {
+    while (nb_blocs--)
+    {
         for (i = 0; i < p->nbe; i++)
             fread_safe((char *)bloc->t[i], p->nbe, sizeof(bloc->t[0][0]), stdin);
 
@@ -317,7 +350,8 @@ void filtre_quantif(struct parametres *p) {
     }
 }
 
-void filtre_zigzag(struct parametres *p) {
+void filtre_zigzag(struct parametres *p)
+{
     Matrice *bloc;
     int largeur, hauteur, nb_blocs;
     int i, x, y;
@@ -330,13 +364,15 @@ void filtre_zigzag(struct parametres *p) {
 
     nb_blocs = ((hauteur + p->nbe - 1) / p->nbe) * ((largeur + p->nbe - 1) / p->nbe);
 
-    while (nb_blocs--) {
+    while (nb_blocs--)
+    {
         for (i = 0; i < p->nbe; i++)
             fread_safe((char *)bloc->t[i], p->nbe, sizeof(bloc->t[0][0]), stdin);
 
         x = 0;
         y = 0;
-        for (;;) {
+        for (;;)
+        {
             fwrite((char *)&bloc->t[y][x], 1, sizeof(bloc->t[0][0]), stdout);
             if (x == p->nbe - 1 && y == p->nbe - 1)
                 break;
@@ -345,7 +381,8 @@ void filtre_zigzag(struct parametres *p) {
     }
 }
 
-void filtre_zigzaginv(struct parametres *p) {
+void filtre_zigzaginv(struct parametres *p)
+{
     Matrice *bloc;
     int largeur, hauteur, nb_blocs;
     int i, x, y;
@@ -358,10 +395,12 @@ void filtre_zigzaginv(struct parametres *p) {
 
     nb_blocs = ((hauteur + p->nbe - 1) / p->nbe) * ((largeur + p->nbe - 1) / p->nbe);
 
-    while (nb_blocs--) {
+    while (nb_blocs--)
+    {
         x = 0;
         y = 0;
-        for (;;) {
+        for (;;)
+        {
             fread_safe((char *)&bloc->t[y][x], 1, sizeof(bloc->t[0][0]), stdin);
             if (x == p->nbe - 1 && y == p->nbe - 1)
                 break;
@@ -373,13 +412,20 @@ void filtre_zigzaginv(struct parametres *p) {
     }
 }
 
-void filtre_ondelette(struct parametres *p) { ondelette_encode_image(p->qualite); }
+void filtre_ondelette(struct parametres *p)
+{
+    ondelette_encode_image(p->qualite);
+}
 
-void filtre_ondeletteinv(struct parametres *p) { ondelette_decode_image(); }
+void filtre_ondeletteinv(struct parametres *p)
+{
+    ondelette_decode_image();
+}
 
 #define ARG(X) {#X, (char *)&pp.X - (char *)&pp}
 
-void filtres(int argc, char **argv) {
+void filtres(int argc, char **argv)
+{
     const static struct parametres p[] = {
         {"affiche_son", affiche_son, 0, 128, 33, 10, 0},
         {"affiche_dct", affiche_son, 1, 128, 33, 10, 0},
@@ -410,7 +456,8 @@ void filtres(int argc, char **argv) {
     pc = argv[0];
 
     for (i = 0; i < TAILLE(p); i++)
-        if (strcmp(pc, p[i].nom) == 0) {
+        if (strcmp(pc, p[i].nom) == 0)
+        {
             pp = p[i];
 
             if (0)

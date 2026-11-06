@@ -41,22 +41,27 @@
  * En perdant le moins d'information possible.
  */
 
-void compresse(struct intstream *entier, struct intstream *entier_signe, int nbe,
-               const float *dct) {
+void compresse(struct intstream *entier, struct intstream *entier_signe, int nbe, const float *dct)
+{
     int compteur_zeros = 0;
 
-    for (int i = 0; i < nbe; i++) {
+    for (int i = 0; i < nbe; i++)
+    {
         int dct_convertie = roundf(dct[i]);
-        if (dct_convertie == 0) {
+        if (dct_convertie == 0)
+        {
             compteur_zeros++;
-        } else {
+        }
+        else
+        {
             put_entier_intstream(entier, compteur_zeros);
             put_entier_intstream(entier_signe, dct_convertie);
             compteur_zeros = 0;
         }
     }
 
-    if (compteur_zeros > 0) {
+    if (compteur_zeros > 0)
+    {
         put_entier_intstream(entier, compteur_zeros);
     }
 }
@@ -65,19 +70,23 @@ void compresse(struct intstream *entier, struct intstream *entier_signe, int nbe
  * Lit le tableau de flottant qui est dans les deux "instream"
  */
 
-void decompresse(struct intstream *entier, struct intstream *entier_signe, int nbe, float *dct) {
+void decompresse(struct intstream *entier, struct intstream *entier_signe, int nbe, float *dct)
+{
     int i = 0;
     int nombre_zeros, valeur;
 
-    while (i < nbe) {
+    while (i < nbe)
+    {
         nombre_zeros = get_entier_intstream(entier);
 
-        while (nombre_zeros--) {
+        while (nombre_zeros--)
+        {
             dct[i] = 0;
             i++;
         }
 
-        if (i >= nbe) {
+        if (i >= nbe)
+        {
             break;
         }
         valeur = get_entier_intstream(entier_signe);

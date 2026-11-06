@@ -4,7 +4,8 @@
 
 #define NBE 5
 
-void coef_dct_tst() {
+void coef_dct_tst()
+{
     Matrice *table;
     int i, j;
     static float t[NBE][NBE] = {
@@ -19,7 +20,8 @@ void coef_dct_tst() {
     coef_dct(table);
 
     if (0)
-        for (j = 0; j < NBE; j++) {
+        for (j = 0; j < NBE; j++)
+        {
             printf("{ ");
             for (i = 0; i < NBE; i++)
                 printf("%s%g", i ? "," : "", table->t[j][i]);
@@ -28,7 +30,8 @@ void coef_dct_tst() {
 
     for (j = 0; j < NBE; j++)
         for (i = 0; i < NBE; i++)
-            if (fabs(table->t[j][i] - t[j][i]) > 0.0001) {
+            if (fabs(table->t[j][i] - t[j][i]) > 0.0001)
+            {
                 eprintf("La matrice est mauvaise.\n");
                 eprintf("dct[%d][%d] = %g au lieu de %g\n", j, i, table->t[j][i], t[j][i]);
                 return;
@@ -38,7 +41,8 @@ void coef_dct_tst() {
 #define BIG 128
 #define F(i) (cos(i) + cos(i / 4. + .1) + cos(i / 7. + 2))
 
-void dct_tst() {
+void dct_tst()
+{
     int i;
     float entree[BIG], sortie[BIG];
     static float dct_ok[BIG] = {
@@ -67,14 +71,16 @@ void dct_tst() {
 
     dct(0, BIG, entree, sortie);
 
-    if (0) {
+    if (0)
+    {
         for (i = 0; i < BIG; i++)
             printf(", %g", sortie[i]);
         printf("\n");
     }
 
     for (i = 0; i < BIG; i++)
-        if (fabs(sortie[i] - dct_ok[i]) > 0.0001) {
+        if (fabs(sortie[i] - dct_ok[i]) > 0.0001)
+        {
             eprintf("La dct est mauvaise.\n");
             eprintf("sortie[%d] = %g au lieu de %g\n", i, sortie[i], dct_ok[i]);
             return;
@@ -85,7 +91,8 @@ void dct_tst() {
     dct(1, BIG, sortie, entree);
 
     for (i = 0; i < BIG; i++)
-        if (fabs(entree[i] - F(i)) > 0.01) {
+        if (fabs(entree[i] - F(i)) > 0.01)
+        {
             eprintf("La dct inverse est mauvaise.\n");
             eprintf("sortie[%d] = %g au lieu de %g\n", i, entree[i], F(i));
             return;

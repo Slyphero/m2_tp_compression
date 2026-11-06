@@ -9,7 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-extern volatile struct exception_c {
+extern volatile struct exception_c
+{
     int profondeur;
     int profondeur_max;
     jmp_buf *buf;
@@ -51,14 +52,19 @@ extern volatile struct exception_c {
         global_exception.buf = realloc(global_exception.buf, ++global_exception.profondeur_max *   \
                                                                  sizeof(*global_exception.buf));   \
     global_exception.valeur_de_retour = setjmp(global_exception.buf[global_exception.profondeur]); \
-    if (global_exception.valeur_de_retour == 0) {                                                  \
+    if (global_exception.valeur_de_retour == 0)                                                    \
+    {                                                                                              \
         global_exception.profondeur++;                                                             \
         CORPS;                                                                                     \
         global_exception.profondeur--;                                                             \
-    } else {                                                                                       \
+    }                                                                                              \
+    else                                                                                           \
+    {                                                                                              \
         MENAGE;                                                                                    \
-        switch (global_exception.profondeur--, global_exception.valeur_de_retour) {                \
-            CAS default : if (global_exception.profondeur) {                                       \
+        switch (global_exception.profondeur--, global_exception.valeur_de_retour)                  \
+        {                                                                                          \
+            CAS default : if (global_exception.profondeur)                                         \
+            {                                                                                      \
                 /* Passe l'exception au niveau supérieur */                                        \
                 EXCEPTION_LANCE(global_exception.valeur_de_retour);                                \
             }                                                                                      \
@@ -67,7 +73,8 @@ extern volatile struct exception_c {
         }                                                                                          \
     }
 
-enum {
+enum
+{
     Exception_fichier_ouverture = 1,
     Exception_fichier_ecriture,
     Exception_fichier_lecture,

@@ -16,7 +16,12 @@ struct intstream;
  * ATTENTION : deux "intstream" peuvent partager le même "bitstream".
  */
 
-enum intstream_type { Entier, Entier_Signe, Shannon_fano };
+enum intstream_type
+{
+    Entier,
+    Entier_Signe,
+    Shannon_fano
+};
 
 /*
  * Si "shannon_fano" est null, on utilise le Huffman static

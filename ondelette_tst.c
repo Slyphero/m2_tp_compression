@@ -5,7 +5,8 @@
 
 #define NBM 10
 
-static struct {
+static struct
+{
     int nb;
     float in[NBM];
     float out[NBM];
@@ -18,13 +19,16 @@ static struct {
     {5, {1, 2, 4, 8, 16}, {1.5, 6, 16, -0.5, -2}},
 };
 
-void ondelette_1d_tst() {
+void ondelette_1d_tst()
+{
     int i, j;
     float res[NBM];
 
-    for (i = 0; i < TAILLE(t1); i++) {
+    for (i = 0; i < TAILLE(t1); i++)
+    {
         ondelette_1d(t1[i].in, res, t1[i].nb);
-        if (memcmp(res, t1[i].out, t1[i].nb * sizeof(t1[i].out[0])) != 0) {
+        if (memcmp(res, t1[i].out, t1[i].nb * sizeof(t1[i].out[0])) != 0)
+        {
             eprintf("ondelette de :");
             for (j = 0; j < t1[i].nb; j++)
                 eprintf(" %g", t1[i].in[j]);
@@ -40,13 +44,16 @@ void ondelette_1d_tst() {
     }
 }
 
-void ondelette_1d_inverse_tst() {
+void ondelette_1d_inverse_tst()
+{
     int i, j;
     float res[NBM];
 
-    for (i = 0; i < TAILLE(t1); i++) {
+    for (i = 0; i < TAILLE(t1); i++)
+    {
         ondelette_1d_inverse(t1[i].out, res, t1[i].nb);
-        if (memcmp(res, t1[i].in, t1[i].nb * sizeof(t1[i].out[0])) != 0) {
+        if (memcmp(res, t1[i].in, t1[i].nb * sizeof(t1[i].out[0])) != 0)
+        {
             eprintf("ondelette inverse de :");
             for (j = 0; j < t1[i].nb; j++)
                 eprintf(" %g", t1[i].out[j]);
@@ -62,7 +69,8 @@ void ondelette_1d_inverse_tst() {
     }
 }
 
-static struct {
+static struct
+{
     int hau, lar;
     float in[NBM][NBM];
     float out[NBM][NBM];
@@ -109,44 +117,51 @@ static struct {
 
 };
 
-void ondelette_2d_tst() {
+void ondelette_2d_tst()
+{
     int i, y, x;
     Matrice *tf;
     float tmp;
     int transposee;
 
     transposee = 0;
-    for (i = 0; i < TAILLE(t2); i++) {
+    for (i = 0; i < TAILLE(t2); i++)
+    {
         tf = allocation_matrice_float(t2[i].hau, t2[i].lar);
         for (y = 0; y < t2[i].hau; y++)
             for (x = 0; x < t2[i].lar; x++)
                 tf->t[y][x] = t2[i].in[y][x];
 
         ondelette_2d(tf);
-        if (tf->height != t2[i].hau || tf->width != t2[i].lar) {
+        if (tf->height != t2[i].hau || tf->width != t2[i].lar)
+        {
             eprintf("La taille de l'image a été changée !\n");
             return;
         }
         for (y = 0; y < t2[i].hau; y++)
             for (x = 0; x < t2[i].lar; x++)
-                if (tf->t[y][x] != t2[i].out[y][x]) {
+                if (tf->t[y][x] != t2[i].out[y][x])
+                {
                     eprintf("Difference (%d,%d) = %g :\n", y, x, tf->t[y][x] - t2[i].out[y][x]);
                     eprintf("ondelette de :\n");
-                    for (y = 0; y < t2[i].hau; y++) {
+                    for (y = 0; y < t2[i].hau; y++)
+                    {
                         for (x = 0; x < t2[i].lar; x++)
                             eprintf(" %10f", t2[i].in[y][x]);
                         eprintf("\n");
                     }
 
                     eprintf("\ndonne :\n");
-                    for (y = 0; y < t2[i].hau; y++) {
+                    for (y = 0; y < t2[i].hau; y++)
+                    {
                         for (x = 0; x < t2[i].lar; x++)
                             eprintf(" %10f", tf->t[y][x]);
                         eprintf("\n");
                     }
 
                     eprintf("\nau lieu de :\n");
-                    for (y = 0; y < t2[i].hau; y++) {
+                    for (y = 0; y < t2[i].hau; y++)
+                    {
                         for (x = 0; x < t2[i].lar; x++)
                             eprintf(" %10f", t2[i].out[y][x]);
                         eprintf("\n");
@@ -158,7 +173,8 @@ void ondelette_2d_tst() {
         /* Transpose */
 
         for (y = 0; y < NBM; y++)
-            for (x = 0; x < y; x++) {
+            for (x = 0; x < y; x++)
+            {
                 tmp = t2[i].in[x][y];
                 t2[i].in[x][y] = t2[i].in[y][x];
                 t2[i].in[y][x] = tmp;
@@ -173,50 +189,58 @@ void ondelette_2d_tst() {
 
         transposee ^= 1;
 
-        if (transposee == 1) {
+        if (transposee == 1)
+        {
             i--; /* reste sur le meme */
         }
     }
 }
 
-void ondelette_2d_inverse_tst() {
+void ondelette_2d_inverse_tst()
+{
     int i, y, x;
     Matrice *tf;
     float tmp;
     int transposee;
 
     transposee = 0;
-    for (i = 0; i < TAILLE(t2); i++) {
+    for (i = 0; i < TAILLE(t2); i++)
+    {
         tf = allocation_matrice_float(t2[i].hau, t2[i].lar);
         for (y = 0; y < t2[i].hau; y++)
             for (x = 0; x < t2[i].lar; x++)
                 tf->t[y][x] = t2[i].out[y][x];
 
         ondelette_2d_inverse(tf);
-        if (tf->height != t2[i].hau || tf->width != t2[i].lar) {
+        if (tf->height != t2[i].hau || tf->width != t2[i].lar)
+        {
             eprintf("La taille de l'image a été changée !\n");
             return;
         }
         for (y = 0; y < t2[i].hau; y++)
             for (x = 0; x < t2[i].lar; x++)
-                if (tf->t[y][x] != t2[i].in[y][x]) {
+                if (tf->t[y][x] != t2[i].in[y][x])
+                {
                     eprintf("Difference (%d,%d) = %g :\n", y, x, tf->t[y][x] - t2[i].in[y][x]);
                     eprintf("ondelette de :\n");
-                    for (y = 0; y < t2[i].hau; y++) {
+                    for (y = 0; y < t2[i].hau; y++)
+                    {
                         for (x = 0; x < t2[i].lar; x++)
                             eprintf(" %10f", t2[i].out[y][x]);
                         eprintf("\n");
                     }
 
                     eprintf("\ndonne :\n");
-                    for (y = 0; y < t2[i].hau; y++) {
+                    for (y = 0; y < t2[i].hau; y++)
+                    {
                         for (x = 0; x < t2[i].lar; x++)
                             eprintf(" %10f", tf->t[y][x]);
                         eprintf("\n");
                     }
 
                     eprintf("\nau lieu de :\n");
-                    for (y = 0; y < t2[i].hau; y++) {
+                    for (y = 0; y < t2[i].hau; y++)
+                    {
                         for (x = 0; x < t2[i].lar; x++)
                             eprintf(" %10f", t2[i].in[y][x]);
                         eprintf("\n");
@@ -228,7 +252,8 @@ void ondelette_2d_inverse_tst() {
         /* Transpose */
 
         for (y = 0; y < NBM; y++)
-            for (x = 0; x < y; x++) {
+            for (x = 0; x < y; x++)
+            {
                 tmp = t2[i].in[x][y];
                 t2[i].in[x][y] = t2[i].in[y][x];
                 t2[i].in[y][x] = tmp;
@@ -243,7 +268,8 @@ void ondelette_2d_inverse_tst() {
 
         transposee ^= 1;
 
-        if (transposee == 1) {
+        if (transposee == 1)
+        {
             i--; /* reste sur le meme */
         }
     }

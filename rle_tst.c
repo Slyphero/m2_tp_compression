@@ -3,7 +3,8 @@
 #include "intstream.h"
 #include "rle.h"
 
-void compresse_test(int nb_t, float *t, int nb_ok, int *ok) {
+void compresse_test(int nb_t, float *t, int nb_ok, int *ok)
+{
     struct intstream *entier;
     struct intstream *entier_signe;
     struct bitstream *bs;
@@ -21,26 +22,34 @@ void compresse_test(int nb_t, float *t, int nb_ok, int *ok) {
     bs = open_bitstream("xxx", "r");
     entier = open_intstream(bs, Entier, NULL);
     entier_signe = open_intstream(bs, Entier_Signe, NULL);
-    for (i = 0; i < nb_ok; i++) {
-        if ((i % 2) == 0) {
-            if (get_entier_intstream(entier) != ok[i]) {
+    for (i = 0; i < nb_ok; i++)
+    {
+        if ((i % 2) == 0)
+        {
+            if (get_entier_intstream(entier) != ok[i])
+            {
                 eprintf("Pour l'entier %d, j'attendais %d\n", i, ok[i]);
                 return;
             }
-        } else {
-            if (get_entier_intstream(entier_signe) != ok[i]) {
+        }
+        else
+        {
+            if (get_entier_intstream(entier_signe) != ok[i])
+            {
                 eprintf("Pour l'entier %d, j'attendais %d\n", i, ok[i]);
                 return;
             }
         }
     }
-    if (get_entier_intstream(entier_signe) != -123) {
+    if (get_entier_intstream(entier_signe) != -123)
+    {
         eprintf("Un entier de trop a été stocké\n");
         return;
     }
 }
 
-void compresse_tst() {
+void compresse_tst()
+{
     static float t1[] = {0, 0, 5};
     static int ok1[] = {2, 5};
 
@@ -53,7 +62,8 @@ void compresse_tst() {
     return;
 }
 
-void decompresse_tst() {
+void decompresse_tst()
+{
     static float ok[] = {0, -1, 0, 0, 1, 2, 0, 0, 0};
 
     struct intstream *entier;
@@ -75,15 +85,18 @@ void decompresse_tst() {
     decompresse(entier, entier_signe, TAILLE(ok), t);
 
     for (i = 0; i < TAILLE(ok); i++)
-        if (rint(ok[i]) != rint(t[i])) {
+        if (rint(ok[i]) != rint(t[i]))
+        {
             eprintf("Mauvais décodage RLE pour l'entier %d\n", i);
             return;
         }
-    if (t[i] != 1234) {
+    if (t[i] != 1234)
+    {
         eprintf("Vous avez débordé du tableau\n", i);
         return;
     }
-    if (get_entier_intstream(entier_signe) != -123) {
+    if (get_entier_intstream(entier_signe) != -123)
+    {
         eprintf("Un entier de trop a été lu\n");
         return;
     }

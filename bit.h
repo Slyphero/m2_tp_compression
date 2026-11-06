@@ -8,7 +8,11 @@
 /*
  * La valeur d'un bit.
  */
-typedef enum { Faux = 0, Vrai = 1 } Booleen;
+typedef enum
+{
+    Faux = 0,
+    Vrai = 1
+} Booleen;
 /*
  * Un position de bit, indique la position d'un bit dans un entier.
  * Le bit numero 0 est celui de droite (poid faible).

@@ -13,7 +13,8 @@ EXCEPTION_DECLARATION;
             perror("Message system");                                                              \
         return (1);
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     volatile int i, r;
     int status;
     extern void filtres(int argc, char **argv);
@@ -24,7 +25,8 @@ int main(int argc, char **argv) {
     if (strcmp(argv[0], "tests") != 0)
         filtres(argc, argv);
 
-    if (argc >= 3) {
+    if (argc >= 3)
+    {
         fprintf(stderr, "Pas d'argument : tous les tests\n");
         fprintf(stderr, "Un argument : la première fonction à tester\n");
         exit(1);
@@ -32,18 +34,22 @@ int main(int argc, char **argv) {
 
     fprintf(stderr, "***** Les tests ne garantissent pas à 100%% *****\n"
                     "*****      que la fonction est correcte.   *****\n");
-    for (i = 0; i < TAILLE(global); i++) {
-        if (argc == 1 || strcmp(global[i].nom, argv[1]) == 0) {
+    for (i = 0; i < TAILLE(global); i++)
+    {
+        if (argc == 1 || strcmp(global[i].nom, argv[1]) == 0)
+        {
             argc = 1;
             fprintf(stderr, "%-40s : ", global[i].nom);
 
-            if (global[i].test == NULL) {
+            if (global[i].test == NULL)
+            {
                 fprintf(stderr, "Test non implémenté\n");
                 continue;
             }
 
             fflush(stderr);
-            if (fork() == 0) {
+            if (fork() == 0)
+            {
                 r = 0; // Pour éviter un warning
                 EXCEPTION((*global[i].test)(); r = eprintf_utilisee();
                           , , F(Exception_fichier_ouverture); F(Exception_fichier_fermeture);
@@ -54,12 +60,18 @@ int main(int argc, char **argv) {
                 exit(r);
             }
             wait(&status);
-            if (WIFSIGNALED(status)) {
+            if (WIFSIGNALED(status))
+            {
                 fprintf(stderr, "Signal %d (coredump ?)\n", WTERMSIG(status));
-            } else {
-                if (WEXITSTATUS(status) == 0) {
+            }
+            else
+            {
+                if (WEXITSTATUS(status) == 0)
+                {
                     fprintf(stderr, "OK\n");
-                } else {
+                }
+                else
+                {
                     fprintf(stderr, "\n\nLa fonction est mauvaise\n");
                     return (1);
                 }

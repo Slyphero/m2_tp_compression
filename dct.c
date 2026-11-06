@@ -17,17 +17,21 @@
  * avec [j][i] et non [i][j].
  */
 
-void coef_dct(Matrice *table) {
+void coef_dct(Matrice *table)
+{
     int n = table->width;
     double sqrt_n = sqrt(n);
     double sqrt_2 = sqrt(2);
 
-    for (int i = 0; i < table->width; i++) {
+    for (int i = 0; i < table->width; i++)
+    {
         table->t[0][i] = 1.0 / sqrt_n;
     }
 
-    for (int j = 1; j < table->height; j++) {
-        for (int i = 0; i < table->width; i++) {
+    for (int j = 1; j < table->height; j++)
+    {
+        for (int i = 0; i < table->width; i++)
+        {
             table->t[j][i] = (sqrt_2 / sqrt_n) * cos(j * (2 * i + 1) * M_PI / (2 * n));
         }
     }
@@ -44,20 +48,25 @@ void dct(int inverse,         /* ==0: DCT, !=0 DCT inverse */
          int nbe,             /* Nombre d'échantillons  */
          const float *entree, /* Le son avant transformation (DCT/INVDCT) */
          float *sortie        /* Le son après transformation */
-) {
+)
+{
     static Matrice *dct_table = NULL;
     static Matrice *dct_inverse;
 
-    if (dct_table == NULL || dct_table->width != nbe) {
+    if (dct_table == NULL || dct_table->width != nbe)
+    {
         dct_table = allocation_matrice_float(nbe, nbe);
         coef_dct(dct_table);
         dct_inverse = allocation_matrice_float(nbe, nbe);
         transposition_matrice(dct_table, dct_inverse);
     }
 
-    if (inverse) {
+    if (inverse)
+    {
         produit_matrice_vecteur(dct_inverse, entree, sortie);
-    } else {
+    }
+    else
+    {
         produit_matrice_vecteur(dct_table, entree, sortie);
     }
 }

@@ -1,6 +1,7 @@
 #include "tests_proto.h"
 
-struct {
+struct
+{
     char *nom;
     void (*test)();
 } global[] = {

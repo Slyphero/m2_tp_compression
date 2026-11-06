@@ -26,27 +26,34 @@
  * Il contient déjà les coefficients de la dct
  */
 
-void psycho(int nbe, float *dct, float c) {
-	int *indices_a_annuler = (int *) calloc(nbe, sizeof(int));
+void psycho(int nbe, float *dct, float c)
+{
+    int *indices_a_annuler = (int *)calloc(nbe, sizeof(int));
 
-    for (int f1 = 1; f1 < nbe; f1++) {
-        for (int f2 = 1; f2 < nbe; f2++) {
-			if (f1 == f2) {
-				continue;
-			}
+    for (int f1 = 1; f1 < nbe; f1++)
+    {
+        for (int f2 = 1; f2 < nbe; f2++)
+        {
+            if (f1 == f2)
+            {
+                continue;
+            }
 
-			if (c * ABS(dct[f1]) < ABS(dct[f2] / (f2 - f1))) {
-				indices_a_annuler[f1] = 1;
-				break;
-			}
+            if (c * ABS(dct[f1]) < ABS(dct[f2] / (f2 - f1)))
+            {
+                indices_a_annuler[f1] = 1;
+                break;
+            }
         }
     }
 
-    for (int i = 0; i < nbe; i++) {
-		if (indices_a_annuler[i]) {
-			dct[i] = 0.0;
-		}
+    for (int i = 0; i < nbe; i++)
+    {
+        if (indices_a_annuler[i])
+        {
+            dct[i] = 0.0;
+        }
     }
 
-	free(indices_a_annuler);
+    free(indices_a_annuler);
 }
