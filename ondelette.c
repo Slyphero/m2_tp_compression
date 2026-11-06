@@ -28,8 +28,8 @@ void ondelette_1d(const float *entree, float *sortie, int nbe) {
     sortie[milieu] = entree[nbe - 1];
 
     for (int i = 0; i < nbe - 1; i += 2) {
-        sortie[i / 2] = (entree[i] + entree[i + 1]) / 2.0;
-        sortie[i / 2 + milieu + impair] = (entree[i] - entree[i + 1]) / 2.0;
+        sortie[i / 2] = (entree[i] + entree[i + 1]) / 2;
+        sortie[i / 2 + milieu + impair] = (entree[i] - entree[i + 1]) / 2;
     }
 }
 
@@ -219,6 +219,15 @@ void codage_ondelette(Matrice *image, FILE *f) {
 */
 
 void ondelette_1d_inverse(const float *entree, float *sortie, int nbe) {
+    int impair = nbe % 2;
+    int milieu = nbe / 2;
+
+    sortie[nbe - 1] = entree[milieu];
+
+    for (int i = 0; i < nbe - 1; i += 2) {
+        sortie[i] = entree[i / 2] + entree[i / 2 + milieu + impair];
+        sortie[i + 1] = entree[i / 2] - entree[i / 2 + milieu + impair];
+    }
 }
 
 void ondelette_2d_inverse(Matrice *image) {
