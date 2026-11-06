@@ -84,7 +84,50 @@ void ondelette_1d(const float *entree, float *sortie, int nbe) {
  */
 
 void ondelette_2d(Matrice *image) {
+    int largeur = image->width;
+    int hauteur = image->height;
 
+    Matrice *transposee1 = allocation_matrice_float(largeur, hauteur);
+    Matrice *transposee2 = allocation_matrice_float(hauteur, largeur);
+
+    float *sortie;
+    ALLOUER(sortie, MAX(largeur, hauteur));
+
+    while (largeur > 1 || hauteur > 1) {
+        for (int i = 0; i < hauteur; i++) {
+            ondelette_1d(image->t[i], sortie, largeur);
+
+            for (int j = 0; j < largeur; j++) {
+                image->t[i][j] = sortie[j];
+            }
+        }
+
+        transposition_matrice(image, transposee1);
+
+        for (int i = 0; i < largeur; i++) {
+            ondelette_1d(transposee1->t[i], sortie, hauteur);
+
+            for (int j = 0; j < hauteur; j++) {
+                transposee1->t[i][j] = sortie[j];
+            }
+        }
+
+        transposition_matrice(transposee1, transposee2);
+
+        for (int j = 0; j < hauteur; j++) {
+            for (int i = 0; i < largeur; i++) {
+                image->t[j][i] = transposee2->t[j][i];
+            }
+        }
+
+        largeur = (largeur + 1) / 2;
+        hauteur = (hauteur + 1) / 2;
+    }
+
+    liberation_matrice_float(transposee1);
+    liberation_matrice_float(transposee2);
+
+    free(sortie);
 }
 
 /*

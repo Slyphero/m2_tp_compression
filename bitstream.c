@@ -196,8 +196,14 @@ Booleen get_bit(struct bitstream *b) {
  * VOUS NE DEVEZ PAS LES UTILISER, ELLE SONT SEULEMENT LA
  * POUR QU'IL SOIT POSSIBLE D'ECRIRE DES TESTS.
  */
-FILE *bitstream_get_file(const struct bitstream *b) { return (b->fichier); }
+FILE *bitstream_get_file(const struct bitstream *b) {
+    return (b->fichier);
+}
 
-Booleen bitstream_en_ecriture(const struct bitstream *b) { return (b->ecriture); }
+Booleen bitstream_en_ecriture(const struct bitstream *b) {
+    return (b->ecriture);
+}
 
-int bitstream_nb_bits_dans_buffer(const struct bitstream *b) { return (b->nb_bits_dans_buffer); }
+int bitstream_nb_bits_dans_buffer(const struct bitstream *b) {
+    return (b->nb_bits_dans_buffer);
+}
