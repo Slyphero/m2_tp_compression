@@ -139,6 +139,27 @@ void ondelette_2d(Matrice *image) {
  */
 
 void quantif_ondelette(Matrice *image, float qualite) {
+    int largeur = image->width;
+    int hauteur = image->height;
+
+    int milieu_largeur, milieu_hauteur;
+
+    while (largeur > 1 || hauteur > 1) {
+        milieu_largeur = (largeur + 1) / 2;
+        milieu_hauteur = (hauteur + 1) / 2;
+
+        for (int y = 0; y < hauteur; y++) {
+            for (int x = 0; x < largeur; x++) {
+                if (x >= milieu_largeur || y >= milieu_hauteur) {
+                    image->t[y][x] /= qualite;
+                }
+            }
+        }
+
+        largeur = milieu_largeur;
+        hauteur = milieu_hauteur;
+        qualite = MAX(1.0f, qualite / 8);
+    }
 }
 
 /*
